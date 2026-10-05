@@ -1,6 +1,7 @@
-# Honcho Cognition Studio — UI v1.1 Implementation & Gateway
+# Honcho Dashboard — Cognitive Studio & Web Gateway
 
-**Production Web Console for Alex / Honcho v3.2.2 Social Cognition & Identity Layer**  
+**Modern Dark-First Web Dashboard for Honcho v3.2.2 on umbrelOS**  
+**Repository:** `https://github.com/Alexmen97/honcho-dashboard`  
 **Target Server:** `http://192.168.4.91:8000` (OpenAPI 3.1.0 verified)  
 **Root Directory:** `/opt/data/projects/honcho-dashboard`  
 **Stack:** React 18, TypeScript 5, Vite, Offline-compiled Tailwind CSS, TanStack Query v5, Node same-origin gateway.
