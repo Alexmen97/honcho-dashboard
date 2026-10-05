@@ -100,6 +100,9 @@ const ID_PATTERN = '[a-zA-Z0-9_\\-\\.]+';
 const ROUTE_ALLOWLIST = [
   // Health
   { method: 'GET', regex: /^\/health\/?$/ },
+  // Docs & OpenAPI
+  { method: 'GET', regex: /^\/docs\/?$/ },
+  { method: 'GET', regex: /^\/openapi\.json\/?$/ },
   // Workspaces
   { method: 'POST', regex: /^\/v3\/workspaces\/list\/?$/ },
   { method: 'POST', regex: /^\/v3\/workspaces\/?$/ },
@@ -491,9 +494,15 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Direct health probe alias
-  if (pathname === '/health') {
-    proxyToHoncho(req, res, '/health', '');
+  // Direct v3 API pass-through
+  if (pathname.startsWith('/v3/')) {
+    proxyToHoncho(req, res, pathname, parsed.search);
+    return;
+  }
+
+  // Direct health and docs pass-through
+  if (pathname === '/health' || pathname === '/docs' || pathname === '/openapi.json') {
+    proxyToHoncho(req, res, pathname, parsed.search);
     return;
   }
 
