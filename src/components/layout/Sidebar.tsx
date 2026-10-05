@@ -6,6 +6,7 @@ import {
   Compass,
   Sparkles,
 } from 'lucide-react';
+import { ThemeSwitcher } from '../common/ThemeSwitcher';
 
 export type TabType = 'overview' | 'sessions' | 'peer' | 'conclusions' | 'dialectic';
 
@@ -61,7 +62,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   return (
     <aside className="w-64 border-r border-border-subtle bg-surface/50 hidden md:flex flex-col shrink-0">
       <div className="p-3 border-b border-border-subtle">
-        <div className="px-2 py-1 text-[11px] font-medium text-slate-500 uppercase tracking-wider">
+        <div className="px-2 py-1 text-[11px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
           Spazio Operativo
         </div>
       </div>
@@ -78,14 +79,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => onSelectTab(item.id)}
               className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition ${
                 isActive
-                  ? 'bg-surface-elevated text-white shadow-sm border border-slate-700/50'
-                  : 'text-slate-400 hover:bg-surface-elevated/60 hover:text-slate-200'
+                  ? 'bg-surface-elevated text-slate-900 dark:text-white shadow-sm border border-slate-200 dark:border-slate-700/50'
+                  : 'text-slate-600 dark:text-slate-400 hover:bg-surface-elevated/60 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
             >
               <div className="flex items-center gap-2.5">
                 <Icon
                   className={`w-4 h-4 ${
-                    isActive ? (item.isAccent ? 'text-brand-400' : 'text-white') : 'text-slate-500'
+                    isActive ? (item.isAccent ? 'text-brand-500 dark:text-brand-400' : 'text-slate-900 dark:text-white') : 'text-slate-400 dark:text-slate-500'
                   }`}
                 />
                 <span>{item.label}</span>
@@ -94,8 +95,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <span
                   className={`px-1.5 py-0.5 rounded text-[10px] font-mono ${
                     item.isAccent
-                      ? 'bg-brand-500/20 text-brand-300 border border-brand-500/30'
-                      : 'bg-surface text-slate-400 border border-border-subtle'
+                      ? 'bg-brand-50 text-brand-700 border border-brand-200 dark:bg-brand-500/20 dark:text-brand-300 dark:border-brand-500/30'
+                      : 'bg-surface text-slate-600 dark:text-slate-400 border border-border-subtle'
                   }`}
                 >
                   {item.badge}
@@ -106,15 +107,23 @@ export const Sidebar: React.FC<SidebarProps> = ({
         })}
       </nav>
 
+      {/* Theme Switcher in Sidebar */}
+      <div className="p-3 border-t border-border-subtle">
+        <label className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1.5 font-mono">
+          Tema Display
+        </label>
+        <ThemeSwitcher variant="expanded" />
+      </div>
+
       {/* Footer Info */}
-      <div className="p-3 border-t border-border-subtle text-[11px] text-slate-500 font-mono space-y-1">
+      <div className="p-3 border-t border-border-subtle text-[11px] text-slate-500 dark:text-slate-400 font-mono space-y-1">
         <div className="flex items-center justify-between">
           <span>Client:</span>
-          <span className="text-slate-400">React + TS SPA</span>
+          <span className="text-slate-600 dark:text-slate-400">React + TS SPA</span>
         </div>
         <div className="flex items-center justify-between">
           <span>Gateway:</span>
-          <span className="text-slate-400">Node Same-Origin</span>
+          <span className="text-slate-600 dark:text-slate-400">Node Same-Origin</span>
         </div>
       </div>
     </aside>

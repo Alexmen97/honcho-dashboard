@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from './api/client';
+import { ThemeProvider } from './theme/ThemeContext';
 import { Navbar } from './components/layout/Navbar';
 import { Sidebar, TabType } from './components/layout/Sidebar';
 import { MobileNav } from './components/layout/MobileNav';
@@ -92,7 +93,7 @@ function DashboardContent() {
   const isHealthOk = healthData?.status === 'ok';
 
   return (
-    <div className="h-full flex flex-col bg-canvas text-slate-100 overflow-hidden font-sans">
+    <div className="h-full flex flex-col bg-canvas text-slate-900 dark:text-slate-100 overflow-hidden font-sans">
       {/* Top Navbar */}
       <Navbar
         workspaces={workspacesData?.items || []}
@@ -217,9 +218,11 @@ function DashboardContent() {
 
 export function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <DashboardContent />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <DashboardContent />
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }
 

@@ -125,15 +125,15 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
       aria-modal="true"
       aria-labelledby="modal-session-title"
     >
-      <div className="w-full max-w-md rounded-xl bg-surface border border-slate-700 shadow-2xl p-5 text-slate-100 animate-in fade-in zoom-in-95 duration-150">
+      <div className="w-full max-w-md rounded-xl bg-surface border border-slate-200 dark:border-slate-700 shadow-2xl p-5 text-slate-900 dark:text-slate-100 animate-in fade-in zoom-in-95 duration-150">
         <div className="flex items-center justify-between pb-3 border-b border-border-subtle">
           <div className="flex items-center gap-2">
-            <MessageSquarePlus className="w-5 h-5 text-brand-400" />
-            <h3 id="modal-session-title" className="font-semibold text-sm">Nuova Sessione</h3>
+            <MessageSquarePlus className="w-5 h-5 text-brand-500 dark:text-brand-400" />
+            <h3 id="modal-session-title" className="font-semibold text-sm text-slate-900 dark:text-white">Nuova Sessione</h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-surface-elevated transition focus:ring-2 focus:ring-brand-500"
+            className="p-1 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-surface-elevated transition focus:ring-2 focus:ring-brand-500"
             aria-label="Chiudi"
           >
             <X className="w-4 h-4" />
@@ -142,14 +142,14 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
 
         <form onSubmit={handleSubmit} className="mt-4 space-y-4">
           {error && (
-            <div className="p-2.5 rounded bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+            <div className="p-2.5 rounded bg-rose-50 border border-rose-200 dark:bg-rose-500/10 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs font-mono">
               {error}
             </div>
           )}
 
           <div>
-            <label htmlFor="session-id-input" className="block text-xs font-medium text-slate-300 mb-1">
-              ID Sessione <span className="text-brand-400">*</span>
+            <label htmlFor="session-id-input" className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
+              ID Sessione <span className="text-brand-500 dark:text-brand-400">*</span>
             </label>
             <input
               ref={inputRef}
@@ -159,12 +159,12 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
               value={sessionId}
               onChange={(e) => setSessionId(e.target.value)}
               placeholder="es. session-arch-01, debug-sess"
-              className="w-full px-3 py-2 rounded-lg bg-surface-subtle border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 rounded-lg bg-surface border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
 
           <div>
-            <label htmlFor="session-peers-input" className="block text-xs font-medium text-slate-300 mb-1">
+            <label htmlFor="session-peers-input" className="block text-xs font-medium text-slate-700 dark:text-slate-300 mb-1">
               Peer Iniziali (separati da virgola)
             </label>
             <input
@@ -173,7 +173,7 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
               value={peersInput}
               onChange={(e) => setPeersInput(e.target.value)}
               placeholder="es. alex, assistant"
-              className="w-full px-3 py-2 rounded-lg bg-surface-subtle border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 rounded-lg bg-surface border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
 
@@ -181,14 +181,14 @@ export const CreateSessionModal: React.FC<CreateSessionModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated transition"
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-surface-elevated transition border border-transparent hover:border-border-subtle"
             >
               Annulla
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-1.5 rounded-lg text-xs font-medium bg-brand-600 hover:bg-brand-500 text-white transition disabled:opacity-50 flex items-center gap-1.5 focus:ring-2 focus:ring-brand-500"
+              className="px-4 py-1.5 rounded-lg text-xs font-medium bg-brand-600 hover:bg-brand-500 text-white transition disabled:opacity-50 flex items-center gap-1.5 focus:ring-2 focus:ring-brand-500 shadow-sm"
             >
               {isSubmitting ? 'Creazione in corso...' : 'Crea Sessione'}
             </button>

@@ -96,15 +96,15 @@ export const PeersTab: React.FC<PeersTabProps> = ({
   return (
     <div className="h-[calc(100vh-8.5rem)] flex flex-col md:flex-row gap-4">
       {/* Left Column: Peers List */}
-      <div className="w-full md:w-72 shrink-0 flex flex-col rounded-xl border border-border-subtle bg-surface/40 overflow-hidden">
-        <div className="p-3 border-b border-border-subtle flex items-center justify-between bg-surface/60">
+      <div className="w-full md:w-72 shrink-0 flex flex-col rounded-xl border border-border-subtle bg-surface/80 overflow-hidden shadow-card">
+        <div className="p-3 border-b border-border-subtle flex items-center justify-between bg-surface-subtle/60">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-emerald-400" />
-            <h3 className="font-semibold text-xs text-white uppercase tracking-wider">Peer Cognitivi</h3>
+            <Users className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+            <h3 className="font-semibold text-xs text-slate-900 dark:text-white uppercase tracking-wider">Peer Cognitivi</h3>
           </div>
           <button
             onClick={onOpenCreatePeer}
-            className="p-1 rounded text-slate-400 hover:text-white hover:bg-surface-elevated transition focus:ring-2 focus:ring-brand-500"
+            className="p-1 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-surface-elevated transition focus:ring-2 focus:ring-brand-500"
             title="Nuovo Peer"
           >
             <Plus className="w-4 h-4" />
@@ -129,23 +129,23 @@ export const PeersTab: React.FC<PeersTabProps> = ({
                 onClick={() => handleSelectPeer(peer.id)}
                 className={`w-full text-left p-2.5 rounded-lg transition border flex items-center justify-between ${
                   isSelected
-                    ? 'bg-surface-elevated border-emerald-500/40 text-white'
-                    : 'border-transparent text-slate-300 hover:bg-surface-elevated/50 hover:text-white'
+                    ? 'bg-surface-elevated border-emerald-500/40 text-slate-900 dark:text-white shadow-sm'
+                    : 'border-transparent text-slate-700 dark:text-slate-300 hover:bg-surface-elevated/50 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center gap-2.5 truncate">
-                  <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-[10px] font-mono font-bold text-emerald-400 shrink-0">
+                  <div className="w-6 h-6 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-500/20 dark:border-emerald-500/30 dark:text-emerald-400 flex items-center justify-center text-[10px] font-mono font-bold shrink-0">
                     {peer.id.substring(0, 2).toUpperCase()}
                   </div>
                   <span className="font-mono text-xs font-medium truncate">{peer.id}</span>
                 </div>
-                <ChevronRight className="w-3.5 h-3.5 text-slate-500 shrink-0" />
+                <ChevronRight className="w-3.5 h-3.5 text-slate-400 dark:text-slate-400 shrink-0" />
               </button>
             );
           })}
 
           {peersData && peersData.items.length === 0 && (
-            <div className="p-4 text-center text-xs text-slate-500">
+            <div className="p-4 text-center text-xs text-slate-600 dark:text-slate-400">
               Nessun peer registrato. Crea il primo peer (es. alex).
             </div>
           )}
@@ -157,14 +157,14 @@ export const PeersTab: React.FC<PeersTabProps> = ({
         {activePeerId ? (
           <>
             {/* Header info */}
-            <div className="p-4 rounded-xl border border-border-subtle bg-surface/60 flex items-center justify-between">
+            <div className="p-4 rounded-xl border border-border-subtle bg-surface/80 flex items-center justify-between shadow-card">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-mono font-bold text-sm">
                   {activePeerId.substring(0, 2).toUpperCase()}
                 </div>
                 <div>
-                  <h2 className="text-base font-bold text-white font-mono">{activePeerId}</h2>
-                  <div className="flex items-center gap-2 text-[11px] text-slate-400 font-mono mt-0.5">
+                  <h2 className="text-base font-bold text-slate-900 dark:text-white font-mono">{activePeerId}</h2>
+                  <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                     <span>Workspace: {workspaceId}</span>
                   </div>
                 </div>
@@ -174,17 +174,17 @@ export const PeersTab: React.FC<PeersTabProps> = ({
             </div>
 
             {/* Cognitive Card Box */}
-            <div className="p-5 rounded-xl border border-border-subtle bg-surface/50 space-y-3">
+            <div className="p-5 rounded-xl border border-border-subtle bg-surface/80 space-y-3 shadow-card">
               <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
                 <div className="flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-brand-400" />
-                  <h3 className="font-semibold text-xs text-white uppercase tracking-wider">
+                  <Brain className="w-4 h-4 text-brand-500 dark:text-brand-400" />
+                  <h3 className="font-semibold text-xs text-slate-900 dark:text-white uppercase tracking-wider">
                     Scheda Cognitiva (Peer Card)
                   </h3>
                 </div>
                 <button
                   onClick={() => refetchCard()}
-                  className="text-[11px] text-brand-400 hover:text-brand-300 font-mono"
+                  className="text-[11px] text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 font-mono font-medium"
                 >
                   Aggiorna
                 </button>
@@ -205,9 +205,9 @@ export const PeersTab: React.FC<PeersTabProps> = ({
                   {cardData.peer_card.map((trait, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-lg bg-surface-subtle border border-border-subtle text-xs text-slate-200 flex items-start gap-2.5 font-sans leading-relaxed"
+                      className="p-3 rounded-lg bg-surface-subtle border border-border-subtle text-xs text-slate-800 dark:text-slate-200 flex items-start gap-2.5 font-sans leading-relaxed"
                     >
-                      <Sparkles className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                      <Sparkles className="w-4 h-4 text-amber-500 dark:text-amber-400 shrink-0 mt-0.5" />
                       <span>{trait}</span>
                     </div>
                   ))}
@@ -216,55 +216,55 @@ export const PeersTab: React.FC<PeersTabProps> = ({
 
               {/* Null or empty peer card: educational learning state */}
               {cardData && (!cardData.peer_card || cardData.peer_card.length === 0) && (
-                <div className="p-4 rounded-lg bg-surface-subtle/70 border border-slate-700/60 text-center space-y-2">
-                  <Info className="w-5 h-5 text-brand-400 mx-auto" />
-                  <div className="text-xs font-medium text-slate-300">
+                <div className="p-4 rounded-lg bg-surface-subtle/70 border border-slate-200 dark:border-slate-700/60 text-center space-y-2">
+                  <Info className="w-5 h-5 text-brand-500 dark:text-brand-400 mx-auto" />
+                  <div className="text-xs font-medium text-slate-800 dark:text-slate-300">
                     Scheda cognitiva in fase di distillazione
                   </div>
-                  <p className="text-[11px] text-slate-400 max-w-md mx-auto leading-relaxed">
-                    Honcho sta osservando le conversazioni con <span className="text-white font-mono">{activePeerId}</span>. Le schede cognitive ad alto livello vengono sintetizzate in modo asincrono durante i cicli di <em>dreaming</em>.
+                  <p className="text-[11px] text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
+                    Honcho sta osservando le conversazioni con <span className="text-slate-900 dark:text-white font-mono font-semibold">{activePeerId}</span>. Le schede cognitive ad alto livello vengono sintetizzate in modo asincrono durante i cicli di <em>dreaming</em>.
                   </p>
                 </div>
               )}
             </div>
 
             {/* Representation Query Section (Read/Query Semantics) */}
-            <div className="p-5 rounded-xl border border-border-subtle bg-surface/50 space-y-4">
+            <div className="p-5 rounded-xl border border-border-subtle bg-surface/80 space-y-4 shadow-card">
               <div className="flex items-center justify-between pb-2 border-b border-border-subtle">
                 <div className="flex items-center gap-2">
-                  <Database className="w-4 h-4 text-emerald-400" />
-                  <h3 className="font-semibold text-xs text-white uppercase tracking-wider">
+                  <Database className="w-4 h-4 text-emerald-500 dark:text-emerald-400" />
+                  <h3 className="font-semibold text-xs text-slate-900 dark:text-white uppercase tracking-wider">
                     Query Representation Scoped
                   </h3>
                 </div>
-                <span className="text-[10px] text-slate-500 font-mono">POST /representation (Query)</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono">POST /representation (Query)</span>
               </div>
 
-              <div className="text-xs text-slate-400 leading-relaxed bg-surface-subtle/50 p-2.5 rounded-lg border border-border-subtle">
+              <div className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed bg-surface-subtle/50 p-2.5 rounded-lg border border-border-subtle">
                 Recupera un sottoinsieme profilato della rappresentazione esistente del peer. È un'operazione di lettura/query rapida, <strong>non un ricalcolo di embedding o dreaming</strong>.
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="rep-session-filter" className="block text-[11px] text-slate-400 mb-1 font-mono">Filtro Session ID (opzionale):</label>
+                  <label htmlFor="rep-session-filter" className="block text-[11px] text-slate-600 dark:text-slate-400 mb-1 font-mono">Filtro Session ID (opzionale):</label>
                   <input
                     id="rep-session-filter"
                     type="text"
                     value={repSessionId}
                     onChange={(e) => setRepSessionId(e.target.value)}
                     placeholder="es. session-01"
-                    className="w-full px-2.5 py-1.5 rounded bg-surface-subtle border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:ring-1 focus:ring-brand-500"
+                    className="w-full px-2.5 py-1.5 rounded bg-surface border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-1 focus:ring-brand-500"
                   />
                 </div>
                 <div>
-                  <label htmlFor="rep-semantic-query" className="block text-[11px] text-slate-400 mb-1 font-mono">Query Semantica (opzionale):</label>
+                  <label htmlFor="rep-semantic-query" className="block text-[11px] text-slate-600 dark:text-slate-400 mb-1 font-mono">Query Semantica (opzionale):</label>
                   <input
                     id="rep-semantic-query"
                     type="text"
                     value={repQuery}
                     onChange={(e) => setRepQuery(e.target.value)}
                     placeholder="es. architettura, preferenze"
-                    className="w-full px-2.5 py-1.5 rounded bg-surface-subtle border border-slate-700 text-xs font-mono text-white placeholder-slate-500 focus:ring-1 focus:ring-brand-500"
+                    className="w-full px-2.5 py-1.5 rounded bg-surface border border-slate-300 dark:border-slate-700 text-xs font-mono text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:ring-1 focus:ring-brand-500"
                   />
                 </div>
               </div>
@@ -273,7 +273,7 @@ export const PeersTab: React.FC<PeersTabProps> = ({
                 <button
                   onClick={() => repMutation.mutate()}
                   disabled={repMutation.isPending}
-                  className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-surface-elevated hover:bg-surface-hover text-brand-300 border border-brand-500/40 transition flex items-center gap-1.5 disabled:opacity-40"
+                  className="px-3.5 py-1.5 rounded-lg text-xs font-medium bg-surface-elevated hover:bg-surface-hover text-brand-600 dark:text-brand-300 border border-brand-300 dark:border-brand-500/40 transition flex items-center gap-1.5 disabled:opacity-40"
                 >
                   <Search className="w-3.5 h-3.5" />
                   <span>{repMutation.isPending ? 'Recupero in corso...' : 'Recupera Representation'}</span>
@@ -281,14 +281,14 @@ export const PeersTab: React.FC<PeersTabProps> = ({
               </div>
 
               {repMutation.isError && (
-                <div className="p-2.5 rounded bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono">
+                <div className="p-2.5 rounded bg-rose-50 border border-rose-200 dark:bg-rose-500/10 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs font-mono">
                   {repMutation.error instanceof Error ? repMutation.error.message : 'Errore query representation'}
                 </div>
               )}
 
               {Boolean(representationResult) && (
-                <div className="mt-3 p-3 rounded-lg bg-canvas border border-slate-800 font-mono text-xs text-slate-300 overflow-x-auto max-h-64">
-                  <div className="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Risultato Representation:</div>
+                <div className="mt-3 p-3 rounded-lg bg-slate-100 dark:bg-canvas border border-slate-200 dark:border-slate-800 font-mono text-xs text-slate-800 dark:text-slate-300 overflow-x-auto max-h-64">
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 font-semibold">Risultato Representation:</div>
                   <pre>{JSON.stringify(representationResult, null, 2)}</pre>
                 </div>
               )}
@@ -296,21 +296,21 @@ export const PeersTab: React.FC<PeersTabProps> = ({
 
             {/* Peer Context Summary */}
             {contextData && (
-              <div className="p-5 rounded-xl border border-border-subtle bg-surface/50 space-y-3">
+              <div className="p-5 rounded-xl border border-border-subtle bg-surface/80 space-y-3 shadow-card">
                 <div className="flex items-center gap-2 pb-2 border-b border-border-subtle">
-                  <Layers className="w-4 h-4 text-slate-400" />
-                  <h3 className="font-semibold text-xs text-white uppercase tracking-wider">
+                  <Layers className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+                  <h3 className="font-semibold text-xs text-slate-900 dark:text-white uppercase tracking-wider">
                     Contesto Profilo Generale
                   </h3>
                 </div>
-                <div className="text-xs font-mono text-slate-400">
-                  Target ID: <span className="text-slate-200">{contextData.target_id || 'Globale'}</span>
+                <div className="text-xs font-mono text-slate-600 dark:text-slate-400">
+                  Target ID: <span className="text-slate-800 dark:text-slate-200 font-semibold">{contextData.target_id || 'Globale'}</span>
                 </div>
               </div>
             )}
           </>
         ) : (
-          <div className="h-full flex items-center justify-center text-slate-500 text-xs">
+          <div className="h-full flex items-center justify-center text-slate-600 dark:text-slate-400 text-xs">
             Seleziona un peer per visualizzare profilo e schede cognitive
           </div>
         )}

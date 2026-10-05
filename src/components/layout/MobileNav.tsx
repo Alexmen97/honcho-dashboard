@@ -8,6 +8,7 @@ import {
   X,
 } from 'lucide-react';
 import { TabType } from './Sidebar';
+import { ThemeSwitcher } from '../common/ThemeSwitcher';
 
 interface MobileNavProps {
   activeTab: TabType;
@@ -56,11 +57,11 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                   <div className="w-6 h-6 rounded bg-brand-600 flex items-center justify-center">
                     <Sparkles className="w-3.5 h-3.5 text-white" />
                   </div>
-                  <span className="font-semibold text-sm">Honcho Studio</span>
+                  <span className="font-semibold text-sm text-slate-900 dark:text-white">Honcho Studio</span>
                 </div>
                 <button
                   onClick={onClose}
-                  className="p-1 rounded text-slate-400 hover:text-white"
+                  className="p-1 rounded text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   aria-label="Chiudi menu"
                 >
                   <X className="w-5 h-5" />
@@ -80,16 +81,16 @@ export const MobileNav: React.FC<MobileNavProps> = ({
                       }}
                       className={`w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition ${
                         isActive
-                          ? 'bg-surface-elevated text-white'
-                          : 'text-slate-400 hover:bg-surface-elevated/50 hover:text-white'
+                          ? 'bg-surface-elevated text-slate-900 dark:text-white'
+                          : 'text-slate-600 dark:text-slate-400 hover:bg-surface-elevated/50 hover:text-slate-900 dark:hover:text-white'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <Icon className={`w-4 h-4 ${isActive ? 'text-brand-400' : 'text-slate-500'}`} />
+                        <Icon className={`w-4 h-4 ${isActive ? 'text-brand-500 dark:text-brand-400' : 'text-slate-400 dark:text-slate-500'}`} />
                         <span>{tab.label}</span>
                       </div>
                       {tab.badge !== undefined && (
-                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-surface-subtle text-slate-400 border border-border-subtle">
+                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-surface-subtle text-slate-600 dark:text-slate-400 border border-border-subtle font-mono">
                           {tab.badge}
                         </span>
                       )}
@@ -99,9 +100,17 @@ export const MobileNav: React.FC<MobileNavProps> = ({
               </nav>
             </div>
 
-            <div className="text-[11px] text-slate-500 font-mono border-t border-border-subtle pt-3">
-              <div>Honcho v3.2.2 Live</div>
-              <div>http://192.168.4.91:8000</div>
+            <div className="pt-3 border-t border-border-subtle space-y-3">
+              <div>
+                <label className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-1.5 font-mono">
+                  Tema Display
+                </label>
+                <ThemeSwitcher variant="expanded" />
+              </div>
+              <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">
+                <div>Honcho v3.2.2 Live</div>
+                <div>http://192.168.4.91:8000</div>
+              </div>
             </div>
           </div>
         </div>
@@ -109,7 +118,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({
 
       {/* Bottom Sticky Tab Bar for Mobile */}
       <nav
-        className="md:hidden h-14 border-t border-border-subtle bg-surface px-2 flex items-center justify-around z-30 shrink-0"
+        className="md:hidden h-14 border-t border-border-subtle bg-surface/95 backdrop-blur-md px-2 flex items-center justify-around z-30 shrink-0"
         role="tablist"
       >
         {tabs.map((tab) => {
@@ -122,7 +131,9 @@ export const MobileNav: React.FC<MobileNavProps> = ({
               aria-selected={isActive}
               onClick={() => onSelectTab(tab.id)}
               className={`flex flex-col items-center gap-1 text-[10px] transition ${
-                isActive ? (tab.isAccent ? 'text-brand-400 font-medium' : 'text-white font-medium') : 'text-slate-500 hover:text-slate-300'
+                isActive
+                  ? (tab.isAccent ? 'text-brand-600 dark:text-brand-400 font-medium' : 'text-slate-900 dark:text-white font-medium')
+                  : 'text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200'
               }`}
             >
               <Icon className="w-4 h-4" />

@@ -1,14 +1,58 @@
 <!DOCTYPE html>
-<html lang="it" class="dark h-full bg-[#090d16]">
+<html lang="it" class="h-full">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236366f1' stroke-width='2'><path stroke-linecap='round' stroke-linejoin='round' d='M13 10V3L4 14h7v7l9-11h-7z'/></svg>" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Honcho Cognition Studio — Alex Dashboard</title>
-    <script type="module" crossorigin src="/assets/index-CvaAZdcq.js"></script>
-    <link rel="stylesheet" crossorigin href="/assets/index-DGZmbtgC.css">
+    <!-- Pre-paint Theme Script: prevents flash of wrong theme (FOUC) -->
+    <script>
+      (function() {
+        var theme = 'system';
+        try {
+          if (typeof window !== 'undefined' && window.localStorage) {
+            var stored = localStorage.getItem('honcho-theme');
+            if (stored === 'dark' || stored === 'light' || stored === 'system') {
+              theme = stored;
+            }
+          }
+        } catch (e) {
+          theme = 'system';
+        }
+
+        var isDark = true;
+        try {
+          if (theme === 'dark') {
+            isDark = true;
+          } else if (theme === 'light') {
+            isDark = false;
+          } else if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          } else {
+            isDark = true;
+          }
+        } catch (e) {
+          isDark = true;
+        }
+
+        try {
+          var root = document.documentElement;
+          if (isDark) {
+            root.classList.add('dark');
+            root.classList.remove('light');
+            root.style.colorScheme = 'dark';
+          } else {
+            root.classList.remove('dark');
+            root.classList.add('light');
+            root.style.colorScheme = 'light';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-XyIQ3dsB.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C-YXE70-.css">
   </head>
-  <body class="h-full text-slate-100 flex flex-col font-sans antialiased overflow-hidden select-none bg-canvas">
+  <body class="h-full text-slate-900 dark:text-slate-100 flex flex-col font-sans antialiased overflow-hidden select-none bg-canvas">
     <div id="root" class="h-full flex flex-col"></div>
   </body>
 </html>

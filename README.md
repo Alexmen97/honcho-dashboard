@@ -123,7 +123,7 @@ npm install
 # Generate TypeScript types reproducibly from OpenAPI snapshot
 npm run types:generate
 
-# Run frontend unit & component tests (27 tests in 7 suites)
+# Run frontend unit & component tests (46 tests in 9 suites)
 npm test
 
 # Run gateway security & allowlist tests

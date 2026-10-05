@@ -47,23 +47,62 @@
     }
   </script>
   <style>
-    /* Custom Scrollbar for dense Linear-like feel */
+    /* CSS Variables for Light / Dark tokens */
+    :root {
+      --canvas-bg: #f8fafc;
+      --surface-bg: #ffffff;
+      --surface-subtle: #f1f5f9;
+      --surface-elevated: #ffffff;
+      --surface-hover: #e2e8f0;
+      --border-subtle: #e2e8f0;
+      --text-primary: #0f172a;
+      --text-secondary: #475569;
+      --text-tertiary: #64748b;
+      --text-disabled: #94a3b8;
+      --scrollbar-track: #f8fafc;
+      --scrollbar-thumb: #cbd5e1;
+      --scrollbar-hover: #94a3b8;
+      --shimmer-start: rgba(226, 232, 240, 0.6);
+      --shimmer-mid: rgba(241, 245, 249, 0.9);
+      --card-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    }
+    html.dark {
+      --canvas-bg: #090d16;
+      --surface-bg: #0f172a;
+      --surface-subtle: #131d31;
+      --surface-elevated: #1e293b;
+      --surface-hover: #27354f;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-tertiary: #7e8d9f;
+      --text-disabled: #475569;
+      --scrollbar-track: #090d16;
+      --scrollbar-thumb: #1e293b;
+      --scrollbar-hover: #334155;
+      --shimmer-start: rgba(30, 41, 59, 0.5);
+      --shimmer-mid: rgba(51, 65, 85, 0.8);
+      --card-shadow: none;
+    }
+
+    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
     ::-webkit-scrollbar-track {
-      background: #090d16;
+      background: var(--scrollbar-track);
     }
     ::-webkit-scrollbar-thumb {
-      background: #1e293b;
+      background: var(--scrollbar-thumb);
       border-radius: 3px;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
+      background: var(--scrollbar-hover);
     }
+
     .shimmer {
-      background: linear-gradient(90deg, rgba(30, 41, 59, 0.5) 0%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.5) 100%);
+      background: linear-gradient(90deg, var(--shimmer-start) 0%, var(--shimmer-mid) 50%, var(--shimmer-start) 100%);
       background-size: 200% 100%;
       animation: shimmer 1.6s infinite;
     }
@@ -77,6 +116,144 @@
     }
     .cursor-blink {
       animation: blink 0.8s infinite;
+    }
+
+    /* Light Theme Contextual Overrides */
+    html:not(.dark) body {
+      background-color: var(--canvas-bg) !important;
+      color: var(--text-primary) !important;
+    }
+    html:not(.dark) header,
+    html:not(.dark) aside,
+    html:not(.dark) nav {
+      background-color: var(--surface-bg);
+      border-color: var(--border-subtle);
+    }
+    html:not(.dark) main {
+      background-color: var(--canvas-bg);
+    }
+    html:not(.dark) .bg-canvas {
+      background-color: var(--canvas-bg) !important;
+    }
+    html:not(.dark) .bg-surface {
+      background-color: var(--surface-bg) !important;
+      border-color: var(--border-subtle) !important;
+    }
+    html:not(.dark) .bg-surface\/90 {
+      background-color: rgba(255, 255, 255, 0.92) !important;
+    }
+    html:not(.dark) .bg-surface\/50 {
+      background-color: rgba(248, 250, 252, 0.85) !important;
+    }
+    html:not(.dark) .bg-surface-subtle {
+      background-color: var(--surface-subtle) !important;
+      border-color: var(--border-subtle) !important;
+    }
+    html:not(.dark) .bg-surface-subtle\/40 {
+      background-color: rgba(241, 245, 249, 0.6) !important;
+    }
+    html:not(.dark) .bg-surface-elevated {
+      background-color: var(--surface-elevated) !important;
+      border-color: var(--border-subtle) !important;
+      box-shadow: var(--card-shadow) !important;
+    }
+    html:not(.dark) .border-border-subtle,
+    html:not(.dark) .border-slate-800,
+    html:not(.dark) .border-slate-700,
+    html:not(.dark) .border-slate-700\/60,
+    html:not(.dark) .border-slate-700\/40,
+    html:not(.dark) .border-slate-700\/80,
+    html:not(.dark) .divide-slate-800\/60 > * {
+      border-color: var(--border-subtle) !important;
+    }
+    html:not(.dark) .text-white,
+    html:not(.dark) .text-slate-100,
+    html:not(.dark) .text-slate-200 {
+      color: var(--text-primary) !important;
+    }
+    html:not(.dark) .text-slate-300,
+    html:not(.dark) .text-slate-400 {
+      color: var(--text-secondary) !important;
+    }
+    html:not(.dark) .text-slate-500 {
+      color: var(--text-tertiary) !important;
+    }
+    html:not(.dark) input,
+    html:not(.dark) select,
+    html:not(.dark) textarea {
+      background-color: #ffffff !important;
+      color: var(--text-primary) !important;
+      border-color: #cbd5e1 !important;
+    }
+    html:not(.dark) input:disabled,
+    html:not(.dark) select:disabled {
+      background-color: #f1f5f9 !important;
+      color: var(--text-disabled) !important;
+      border-color: #e2e8f0 !important;
+    }
+    html:not(.dark) .bg-slate-900,
+    html:not(.dark) .bg-slate-800 {
+      background-color: #f1f5f9 !important;
+      color: var(--text-primary) !important;
+    }
+    html:not(.dark) .bg-slate-800\/80 {
+      background-color: #f1f5f9 !important;
+    }
+    html:not(.dark) .bg-indigo-950\/40,
+    html:not(.dark) .bg-brand-950\/40,
+    html:not(.dark) .bg-brand-900\/40 {
+      background-color: #eef2ff !important;
+      border-color: #c7d2fe !important;
+      color: #312e81 !important;
+    }
+    html:not(.dark) .text-indigo-400,
+    html:not(.dark) .text-brand-400 {
+      color: #4f46e5 !important;
+    }
+    html:not(.dark) .text-indigo-300 {
+      color: #4338ca !important;
+    }
+
+    /* Cognitive Badges in Light Mode */
+    html:not(.dark) .bg-emerald-500\/10.text-emerald-400 {
+      background-color: #ecfdf5 !important;
+      color: #047857 !important;
+      border-color: #a7f3d0 !important;
+    }
+    html:not(.dark) .bg-indigo-500\/10.text-indigo-400 {
+      background-color: #eef2ff !important;
+      color: #4338ca !important;
+      border-color: #c7d2fe !important;
+    }
+    html:not(.dark) .bg-amber-500\/10.text-amber-400 {
+      background-color: #fffbeb !important;
+      color: #92400e !important;
+      border-color: #fde68a !important;
+    }
+    html:not(.dark) .bg-rose-500\/10.text-rose-400 {
+      background-color: #fff1f2 !important;
+      color: #be123c !important;
+      border-color: #fecdd3 !important;
+    }
+
+    /* Error banner in light mode */
+    html:not(.dark) #globalErrorBanner {
+      background-color: #fff1f2 !important;
+      border-color: #fecdd3 !important;
+      color: #9f1239 !important;
+    }
+    html:not(.dark) #globalErrorBanner strong {
+      color: #881337 !important;
+    }
+    html:not(.dark) #globalErrorBanner button {
+      background-color: #be123c !important;
+      border-color: #9f1239 !important;
+      color: #ffffff !important;
+    }
+
+    :focus-visible {
+      outline: 2px solid #6366f1;
+      outline-offset: 2px;
     }
   </style>
 </head>
@@ -139,8 +316,25 @@
       </div>
     </div>
 
-    <!-- Center/Right: Interactive State Simulator & Server Health -->
-    <div class="flex items-center gap-3">
+    <!-- Center/Right: Interactive State Simulator & Theme Switcher -->
+    <div class="flex items-center gap-2.5">
+      <!-- THEME SWITCHER (Dark / Light / System) -->
+      <div class="flex items-center bg-surface-subtle p-1 rounded-lg border border-slate-700/60 text-xs" role="radiogroup" aria-label="Selettore Tema">
+        <span class="text-[10px] font-medium text-slate-400 px-1.5 uppercase tracking-wider hidden lg:inline">Tema:</span>
+        <button onclick="setTheme('dark')" id="themeBtn-dark" role="radio" aria-checked="true" class="px-2 py-0.5 rounded text-[11px] font-medium transition flex items-center gap-1 bg-brand-600 text-white shadow-sm" title="Tema Scuro (Dark)">
+          <span>🌙</span>
+          <span class="hidden sm:inline">Dark</span>
+        </button>
+        <button onclick="setTheme('light')" id="themeBtn-light" role="radio" aria-checked="false" class="px-2 py-0.5 rounded text-[11px] font-medium text-slate-400 hover:text-white transition flex items-center gap-1" title="Tema Chiaro (Light)">
+          <span>☀️</span>
+          <span class="hidden sm:inline">Light</span>
+        </button>
+        <button onclick="setTheme('system')" id="themeBtn-system" role="radio" aria-checked="false" class="px-2 py-0.5 rounded text-[11px] font-medium text-slate-400 hover:text-white transition flex items-center gap-1" title="Tema di Sistema (Auto)">
+          <span>💻</span>
+          <span class="hidden sm:inline">Auto</span>
+        </button>
+      </div>
+
       <!-- STATE SIMULATOR BAR (Crucial for Tech Lead review) -->
       <div class="flex items-center bg-surface-subtle p-1 rounded-lg border border-slate-800 text-xs">
         <span class="text-[10px] font-medium text-slate-400 px-2 uppercase tracking-wider hidden sm:inline">Stato UI:</span>
@@ -245,6 +439,15 @@
             <button onclick="switchTab('tab-conclusions'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated">Memoria Conclusioni</button>
             <button onclick="switchTab('tab-dialectic'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated text-brand-400 font-medium">Dialectic Chat Lab</button>
           </nav>
+
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mb-2">Tema Display</div>
+            <div class="grid grid-cols-3 gap-1 bg-surface-subtle p-1 rounded-lg border border-slate-700/60 text-xs">
+              <button onclick="setTheme('dark')" id="m-themeBtn-dark" class="py-1.5 rounded text-[11px] font-medium text-center transition bg-brand-600 text-white">🌙 Dark</button>
+              <button onclick="setTheme('light')" id="m-themeBtn-light" class="py-1.5 rounded text-[11px] font-medium text-center transition text-slate-400">☀️ Light</button>
+              <button onclick="setTheme('system')" id="m-themeBtn-system" class="py-1.5 rounded text-[11px] font-medium text-center transition text-slate-400">💻 Auto</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1329,7 +1532,56 @@
       }
     });
 
-    // Initialize Default State
+    // Theme Management: Dark / Light / System with localStorage & prefers-color-scheme listener
+    let currentThemeMode = localStorage.getItem('honcho-theme') || 'system';
+
+    function updateThemeSwitcherUI(mode) {
+      ['dark', 'light', 'system'].forEach(m => {
+        const btn = document.getElementById('themeBtn-' + m);
+        const mBtn = document.getElementById('m-themeBtn-' + m);
+        const isActive = (m === mode);
+        const activeClass = 'bg-brand-600 text-white font-medium shadow-sm';
+        const inactiveClass = 'text-slate-400 hover:text-white';
+
+        if (btn) {
+          btn.setAttribute('aria-checked', isActive ? 'true' : 'false');
+          btn.className = `px-2 py-0.5 rounded text-[11px] font-medium transition flex items-center gap-1 ${isActive ? activeClass : inactiveClass}`;
+        }
+        if (mBtn) {
+          mBtn.className = `py-1.5 rounded text-[11px] font-medium text-center transition ${isActive ? activeClass : inactiveClass}`;
+        }
+      });
+    }
+
+    function applyTheme(mode) {
+      const root = document.documentElement;
+      const isSystemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = (mode === 'dark') || (mode === 'system' && isSystemDark);
+
+      if (isDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      updateThemeSwitcherUI(mode);
+    }
+
+    function setTheme(mode) {
+      currentThemeMode = mode;
+      localStorage.setItem('honcho-theme', mode);
+      applyTheme(mode);
+    }
+
+    // Dynamic Reactive Listener for System OS appearance change
+    const colorSchemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    colorSchemeMediaQuery.addEventListener('change', () => {
+      if (currentThemeMode === 'system') {
+        applyTheme('system');
+      }
+    });
+
+    // Initialize Default State & Theme
+    applyTheme(currentThemeMode);
     setSimState('normal');
     switchTab('tab-overview');
   </script>

@@ -31,7 +31,21 @@
 
 ---
 
-## 2. Revision 2 Remediations Summary (`docs/REVIEW_REVISION_2.md`)
+## 2. Theme Extension Track (TH-01..TH-05)
+
+> **Theme Extension Gate:** Alex approved Light design proposals via `@hermes`. Developer implemented remediations for blockers TH-DEV-01 and TH-DEV-02 under Code Freeze. Independent QA Audit TH-04 completed and documented in `docs/THEME_QA_REPORT.md`: verified pre-paint storage exception isolation with `node:vm` (no FOUC/flash on OS light), verified dark tertiary text contrast >= 4.5:1 (5.71:1 on card, 6.96:1 on surface), 46 unit tests passed, 8 gateway tests passed, 9 live E2E tests passed. Ticket **TH-04** is **ACCEPTED / PASSED**. Ticket **TH-05** is **ACCEPTED** by Tech Lead for local pre-release build. Git commit, GitHub push, Docker update, and network deployment remain pending Alex confirmation and access policy decision.
+
+| Ticket ID | Title | Owner | Status | Deliverable & Verification Scope |
+|---|---|---|---|---|
+| **TH-01** | Semantic Token Matrix & Visual Mockup Proposal | `@designer` | **APPROVED** | `docs/THEME_DESIGN.md` and mockups approved by Alex |
+| **TH-02** | Semantic CSS Variables & Tailwind Theme Mapping | `@developer` | **ACCEPTED** | Semantic CSS variables in `src/index.css`, Tailwind tokens, `--color-text-tertiary` `#94a3b8` (contrast $\ge 5.7:1$ in Dark) |
+| **TH-03** | Accessible Dark/Light/System Theme Switcher | `@developer` | **ACCEPTED** | Accessible `ThemeSwitcher`, `localStorage` enum persistence, prepaint exception separation in `index.html`, 19 automated theme tests |
+| **TH-04** | Independent QA Verification & Contrast Audit | `@qa-reviewer` | **ACCEPTED (Verified & Audited)** | Independent audit completed; `docs/THEME_QA_REPORT.md` delivered; all blockers resolved and verified |
+| **TH-05** | Tech Lead Theme Acceptance Gate | `@tech-lead` | **ACCEPTED** | Theme extension verified and accepted locally; build ready; deployment pending Alex confirmation |
+
+---
+
+## 3. Revision 2 Remediations Summary (`docs/REVIEW_REVISION_2.md`)
 
 | Blocker ID | Severity | Area | Status | Resolution Verified by QA |
 |---|---|---|---|---|
@@ -42,7 +56,7 @@
 
 ---
 
-## 3. Generator Design Scope & Boundaries (scripts/generate-types.mjs)
+## 4. Generator Design Scope & Boundaries (scripts/generate-types.mjs)
 - Tailored specifically for Honcho OpenAPI 3.2.2 models and schemas.
 - Resolves primitives, enums, arrays, unions (`anyOf`), and `$ref` references.
 - Inline anonymous object schemas (without named `$ref`) fall back to `Record<string, unknown>`.
@@ -51,7 +65,7 @@
 
 ---
 
-## 4. Test Suites & Reproducible Commands
+## 5. Test Suites & Reproducible Commands
 
 - **OpenAPI Type Generation & Generator Unit Test:**
   ```bash
@@ -59,7 +73,7 @@
   node --test scripts/generate-types.test.mjs
   ```
 
-- **Frontend Unit & Component Tests (27 tests in 7 suites):**
+- **Frontend Unit & Component Tests (46 tests in 9 suites):**
   ```bash
   npm test
   ```

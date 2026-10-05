@@ -5,16 +5,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#090d16',
+        canvas: 'rgb(var(--color-canvas) / <alpha-value>)',
         surface: {
-          DEFAULT: '#0f172a',
-          subtle: '#131d31',
-          elevated: '#1e293b',
-          hover: '#27354f',
+          DEFAULT: 'rgb(var(--color-surface) / <alpha-value>)',
+          subtle: 'rgb(var(--color-surface-subtle) / <alpha-value>)',
+          elevated: 'rgb(var(--color-surface-elevated) / <alpha-value>)',
+          hover: 'rgb(var(--color-surface-hover) / <alpha-value>)',
         },
         border: {
-          subtle: 'rgba(255, 255, 255, 0.08)',
-          active: 'rgba(99, 102, 241, 0.4)',
+          subtle: 'var(--color-border-subtle)',
+          active: 'var(--color-border-active)',
         },
         brand: {
           50: '#eef2ff',
@@ -23,6 +23,8 @@ export default {
           500: '#6366f1',
           600: '#4f46e5',
           700: '#4338ca',
+          DEFAULT: 'var(--color-brand)',
+          bg: 'var(--color-brand-bg)',
         },
         level: {
           explicit: '#10b981',
@@ -30,6 +32,9 @@ export default {
           inductive: '#f59e0b',
           contradiction: '#f43f5e',
         },
+      },
+      boxShadow: {
+        card: 'var(--color-card-shadow)',
       },
       fontFamily: {
         sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],

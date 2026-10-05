@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="it" class="h-full bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honcho Cognition Studio — Dark vs Light Theme Comparison</title>
+  <!-- Tailwind CSS bundled locally for 100% offline self-containment -->
+  <script src="./tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'Menlo', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    /* Shimmer dark */
+    .shimmer-dark {
+      background: linear-gradient(90deg, rgba(30, 41, 59, 0.5) 0%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.5) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+    }
+    /* Shimmer light */
+    .shimmer-light {
+      background: linear-gradient(90deg, rgba(226, 232, 240, 0.6) 0%, rgba(241, 245, 249, 0.9) 50%, rgba(226, 232, 240, 0.6) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .cursor-blink { animation: blink 0.8s infinite; }
+  </style>
+</head>
+<body class="min-h-full bg-slate-950 text-slate-100 font-sans antialiased flex flex-col">
+
+  <!-- ========================================================================= -->
+  <!-- TOP SHOWCASE HEADER -->
+  <!-- ========================================================================= -->
+  <header class="h-16 border-b border-slate-800 bg-slate-900/95 sticky top-0 z-40 px-4 sm:px-6 flex items-center justify-between backdrop-blur">
+    <div class="flex items-center gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 via-indigo-500 to-sky-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+        <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm text-white">Honcho Cognition Studio</span>
+          <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 font-mono">Theme Comparison Showcase</span>
+          <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">[Mockup Demo — No Certificazioni Formali]</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Confronto simultaneo Dark vs Light per approvazione di Alex. Layout identico al 100%.</p>
+      </div>
+    </div>
+
+    <!-- Navigation & View Mode Switcher -->
+    <div class="flex items-center gap-3">
+      <div class="flex items-center bg-slate-800 p-1 rounded-lg border border-slate-700 text-xs">
+        <span class="text-[11px] text-slate-400 px-2">Vista:</span>
+        <button onclick="setViewMode('split')" id="vBtn-split" class="px-2.5 py-1 rounded text-[11px] font-medium bg-indigo-600 text-white transition">Fianco a Fianco</button>
+        <button onclick="setViewMode('dark')" id="vBtn-dark" class="px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition">Solo Dark</button>
+        <button onclick="setViewMode('light')" id="vBtn-light" class="px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition">Solo Light</button>
+      </div>
+      <a href="./index.html" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-medium text-white transition flex items-center gap-1.5">
+        <span>Apri Mockup Navigabile</span>
+        &rarr;
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- MAIN COMPARISON GRID -->
+  <!-- ========================================================================= -->
+  <main class="flex-1 p-4 sm:p-6 space-y-8 max-w-[1920px] mx-auto w-full">
+
+    <!-- Notice Banner -->
+    <div class="rounded-xl bg-slate-900 border border-slate-800 p-4 text-xs text-slate-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span><strong>Regola di Progetto:</strong> Il layout approvato per Alex è preservato al pixel. Tutti i componenti (Sessioni, Messaggi, Peer Card, Conclusioni, Dialectic Chat) adottano token semantici reversibili.</span>
+      </div>
+      <div class="flex items-center gap-2 font-mono text-[11px] text-slate-400">
+        <span>Contrasti calcolati:</span>
+        <span class="text-emerald-400">Testo primario &ge; 17:1</span>
+        <span>&bull;</span>
+        <span class="text-emerald-400">Testo secondario &ge; 6.9:1</span>
+        <span>&bull;</span>
+        <span class="text-emerald-400">Badge &ge; 5.2:1</span>
+      </div>
+    </div>
+
+    <!-- DUAL PANES WRAPPER -->
+    <div id="dualPaneContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+      <!-- ===================================================================== -->
+      <!-- PANE 1: DARK THEME (Approved Baseline) -->
+      <!-- ===================================================================== -->
+      <div id="paneDark" class="flex flex-col rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-[#090d16]">
+        
+        <!-- Pane Header -->
+        <div class="px-4 py-3 bg-[#0f172a] border-b border-white/10 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-indigo-500"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-white">Tema Dark (Scuro)</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-white/5 text-slate-300 border border-white/10">Base: #090d16 Canvas</span>
+          </div>
+          <span class="text-[11px] font-mono text-emerald-400">WCAG AAA / AA Misurato</span>
+        </div>
+
+        <!-- Simulated Interface Canvas: Dark -->
+        <div class="p-5 space-y-6 text-slate-100 font-sans">
+          
+          <!-- Mock Header Dark -->
+          <div class="h-12 rounded-xl bg-[#0f172a] border border-white/10 px-3 flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span class="font-mono text-slate-200">test-hermes-workspace</span>
+              <span class="text-[10px] text-slate-400">&bull; alex</span>
+            </div>
+            <!-- Theme Switcher Dark state -->
+            <div class="flex items-center bg-[#131d31] p-0.5 rounded-lg border border-slate-700/60 text-[10px] font-medium">
+              <span class="px-2 py-0.5 rounded bg-indigo-600 text-white font-semibold flex items-center gap-1">🌙 Dark</span>
+              <span class="px-2 py-0.5 text-slate-400">☀️ Light</span>
+              <span class="px-2 py-0.5 text-slate-400">💻 Auto</span>
+            </div>
+          </div>
+
+          <!-- Metric Cards Dark -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-xl bg-[#0f172a] border border-white/10">
+              <div class="text-[10px] uppercase tracking-wider text-slate-400">Sessioni Attive</div>
+              <div class="text-xl font-bold font-mono text-white mt-0.5">1</div>
+              <div class="text-[10px] text-emerald-400 mt-1 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> session-01
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-[#0f172a] border border-white/10">
+              <div class="text-[10px] uppercase tracking-wider text-slate-400">Conclusioni Honcho</div>
+              <div class="text-xl font-bold font-mono text-indigo-400 mt-0.5">4</div>
+              <div class="text-[10px] text-slate-400 mt-1">2 explicit, 1 ded., 1 ind.</div>
+            </div>
+          </div>
+
+          <!-- Peer Card Dark -->
+          <div class="p-4 rounded-xl bg-[#0f172a] border border-white/10 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white text-[11px] font-bold">A</div>
+                <span class="text-xs font-semibold text-white">Alex Cognitive Profile</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-400">GET /peers/alex/card</span>
+            </div>
+            <div class="p-3 rounded-lg bg-[#131d31] border border-slate-800 text-xs text-slate-200">
+              <strong>Trait Sintetizzato:</strong> Predilige architettura a multi-agenti e design system leggeri con Tailwind CSS e token coerenti.
+            </div>
+          </div>
+
+          <!-- Message Timeline Dark -->
+          <div class="p-4 rounded-xl bg-[#0f172a] border border-white/10 space-y-3">
+            <div class="text-xs font-semibold text-white border-b border-slate-800 pb-1.5 flex items-center justify-between">
+              <span>Timeline Messaggi</span>
+              <span class="text-[10px] font-mono text-slate-400">session-01</span>
+            </div>
+            <!-- User bubble -->
+            <div class="flex flex-col items-start max-w-sm">
+              <span class="text-[10px] text-indigo-400 font-mono mb-0.5">alex &bull; 10:29 (28 tokens)</span>
+              <div class="p-2.5 rounded-xl rounded-tl-sm bg-[#1e293b] border border-slate-700/60 text-xs text-slate-200">
+                Verificare che la palette scura rispetti contrasti elevati.
+              </div>
+            </div>
+            <!-- Assistant bubble -->
+            <div class="flex flex-col items-end max-w-sm ml-auto">
+              <span class="text-[10px] text-indigo-300 font-mono mb-0.5">assistant &bull; 10:29 (46 tokens)</span>
+              <div class="p-2.5 rounded-xl rounded-tr-sm bg-indigo-950/40 border border-indigo-500/30 text-xs text-slate-100">
+                Confermato: testo primario a 18.57:1 e badge fino a 11.64:1.
+              </div>
+            </div>
+          </div>
+
+          <!-- Conclusions Table & Badges Dark -->
+          <div class="rounded-xl bg-[#0f172a] border border-white/10 overflow-hidden">
+            <div class="px-3 py-2 bg-[#131d31] border-b border-slate-800 text-xs font-semibold text-white flex justify-between">
+              <span>Conclusioni & Livelli Cognitivi</span>
+              <span class="text-[10px] font-mono text-indigo-400">POST /conclusions/query</span>
+            </div>
+            <div class="divide-y divide-slate-800/60 text-xs">
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">explicit</span>
+                <span class="text-slate-300 flex-1 truncate">Standard Linear/Vercel minimalisti.</span>
+                <span class="text-[10px] font-mono text-slate-400">1x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">deductive</span>
+                <span class="text-slate-300 flex-1 truncate">Aderenza rigida a OpenAPI Honcho v3.2.2.</span>
+                <span class="text-[10px] font-mono text-slate-400">2x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">inductive</span>
+                <span class="text-slate-300 flex-1 truncate">Feedback visivo con loading shimmer aumenta fiducia.</span>
+                <span class="text-[10px] font-mono text-slate-400">3x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-500/10 text-rose-400 border border-rose-500/20">contradiction</span>
+                <span class="text-slate-300 flex-1 truncate">Nessuna contraddizione rilevata.</span>
+                <span class="text-[10px] font-mono text-slate-400">0x</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dialectic Chat with Evidence Box Dark -->
+          <div class="p-4 rounded-xl bg-[#0f172a] border border-white/10 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-1.5">
+              <span class="text-xs font-semibold text-white">Dialectic Chat (Streaming SSE)</span>
+              <span class="text-[10px] font-mono text-indigo-400">POST /peers/alex/chat</span>
+            </div>
+            <div class="p-3 rounded-xl bg-[#1e293b] border border-slate-700/80 text-xs text-slate-100 space-y-2">
+              <p>Dall'analisi delle evidenze di Alex, l'architettura supporta Dark/Light via CSS variables.<span class="cursor-blink text-indigo-400 font-bold">▍</span></p>
+              <!-- Evidence box dark -->
+              <div class="p-2 rounded bg-[#0f172a] border border-slate-700 text-[10px] text-slate-300 font-mono space-y-1">
+                <div class="text-indigo-400 font-sans font-semibold">Audit Evidenze Honcho:</div>
+                <div>&bull; Consultate 2 conclusioni (explicit, deductive)</div>
+                <div>&bull; Messaggi analizzati in session-01</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error & Loading States Dark -->
+          <div class="space-y-2">
+            <div class="p-2.5 rounded-lg bg-rose-950/80 border border-rose-500/30 text-[11px] text-rose-200 flex items-center justify-between">
+              <span><strong>Errore 500 (Simulato):</strong> Timeout query verso Honcho.</span>
+              <button class="px-2 py-0.5 rounded bg-rose-900 text-white font-medium text-[10px]">Riprova</button>
+            </div>
+            <div class="h-6 rounded shimmer-dark"></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- PANE 2: LIGHT THEME (Proposed Clean Mode) -->
+      <!-- ===================================================================== -->
+      <div id="paneLight" class="flex flex-col rounded-2xl overflow-hidden border border-slate-300 shadow-2xl bg-[#f8fafc]">
+        
+        <!-- Pane Header -->
+        <div class="px-4 py-3 bg-white border-b border-slate-200 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+            <span class="font-bold text-xs uppercase tracking-wider text-slate-900">Tema Light (Chiaro Proposto)</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-700 border border-slate-200">Base: #f8fafc Canvas</span>
+          </div>
+          <span class="text-[11px] font-mono text-indigo-600 font-semibold">WCAG AAA / AA Misurato</span>
+        </div>
+
+        <!-- Simulated Interface Canvas: Light -->
+        <div class="p-5 space-y-6 text-slate-900 font-sans">
+          
+          <!-- Mock Header Light -->
+          <div class="h-12 rounded-xl bg-white border border-slate-200 px-3 flex items-center justify-between text-xs shadow-sm">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="font-mono text-slate-800 font-medium">test-hermes-workspace</span>
+              <span class="text-[10px] text-slate-500">&bull; alex</span>
+            </div>
+            <!-- Theme Switcher Light state -->
+            <div class="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px] font-medium">
+              <span class="px-2 py-0.5 text-slate-600">🌙 Dark</span>
+              <span class="px-2 py-0.5 rounded bg-white text-indigo-600 font-semibold shadow-sm flex items-center gap-1">☀️ Light</span>
+              <span class="px-2 py-0.5 text-slate-600">💻 Auto</span>
+            </div>
+          </div>
+
+          <!-- Metric Cards Light -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Sessioni Attive</div>
+              <div class="text-xl font-bold font-mono text-slate-900 mt-0.5">1</div>
+              <div class="text-[10px] text-emerald-600 font-medium mt-1 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> session-01
+              </div>
+            </div>
+            <div class="p-3.5 rounded-xl bg-white border border-slate-200 shadow-sm">
+              <div class="text-[10px] uppercase tracking-wider text-slate-500 font-medium">Conclusioni Honcho</div>
+              <div class="text-xl font-bold font-mono text-indigo-600 mt-0.5">4</div>
+              <div class="text-[10px] text-slate-500 mt-1">2 explicit, 1 ded., 1 ind.</div>
+            </div>
+          </div>
+
+          <!-- Peer Card Light -->
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white text-[11px] font-bold">A</div>
+                <span class="text-xs font-semibold text-slate-900">Alex Cognitive Profile</span>
+              </div>
+              <span class="text-[10px] font-mono text-slate-500">GET /peers/alex/card</span>
+            </div>
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-800">
+              <strong class="text-slate-900">Trait Sintetizzato:</strong> Predilige architettura a multi-agenti e design system leggeri con Tailwind CSS e token coerenti.
+            </div>
+          </div>
+
+          <!-- Message Timeline Light -->
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3">
+            <div class="text-xs font-semibold text-slate-900 border-b border-slate-100 pb-1.5 flex items-center justify-between">
+              <span>Timeline Messaggi</span>
+              <span class="text-[10px] font-mono text-slate-500">session-01</span>
+            </div>
+            <!-- User bubble -->
+            <div class="flex flex-col items-start max-w-sm">
+              <span class="text-[10px] text-indigo-700 font-mono mb-0.5 font-medium">alex &bull; 10:29 (28 tokens)</span>
+              <div class="p-2.5 rounded-xl rounded-tl-sm bg-slate-100 border border-slate-200 text-xs text-slate-800">
+                Verificare che la palette scura rispetti contrasti elevati.
+              </div>
+            </div>
+            <!-- Assistant bubble -->
+            <div class="flex flex-col items-end max-w-sm ml-auto">
+              <span class="text-[10px] text-indigo-700 font-mono mb-0.5 font-medium">assistant &bull; 10:29 (46 tokens)</span>
+              <div class="p-2.5 rounded-xl rounded-tr-sm bg-indigo-50 border border-indigo-200 text-xs text-indigo-950">
+                Confermato: testo primario a 17.85:1 e badge fino a 7.90:1.
+              </div>
+            </div>
+          </div>
+
+          <!-- Conclusions Table & Badges Light -->
+          <div class="rounded-xl bg-white border border-slate-200 shadow-sm overflow-hidden">
+            <div class="px-3 py-2 bg-slate-50 border-b border-slate-200 text-xs font-semibold text-slate-800 flex justify-between">
+              <span>Conclusioni & Livelli Cognitivi</span>
+              <span class="text-[10px] font-mono text-indigo-600">POST /conclusions/query</span>
+            </div>
+            <div class="divide-y divide-slate-100 text-xs">
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">explicit</span>
+                <span class="text-slate-700 flex-1 truncate">Standard Linear/Vercel minimalisti.</span>
+                <span class="text-[10px] font-mono text-slate-500">1x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">deductive</span>
+                <span class="text-slate-700 flex-1 truncate">Aderenza rigida a OpenAPI Honcho v3.2.2.</span>
+                <span class="text-[10px] font-mono text-slate-500">2x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-amber-50 text-amber-800 border border-amber-200">inductive</span>
+                <span class="text-slate-700 flex-1 truncate">Feedback visivo con loading shimmer aumenta fiducia.</span>
+                <span class="text-[10px] font-mono text-slate-500">3x</span>
+              </div>
+              <div class="p-2.5 flex items-center justify-between gap-2">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold bg-rose-50 text-rose-700 border border-rose-200">contradiction</span>
+                <span class="text-slate-700 flex-1 truncate">Nessuna contraddizione rilevata.</span>
+                <span class="text-[10px] font-mono text-slate-500">0x</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dialectic Chat with Evidence Box Light -->
+          <div class="p-4 rounded-xl bg-white border border-slate-200 shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+              <span class="text-xs font-semibold text-slate-900">Dialectic Chat (Streaming SSE)</span>
+              <span class="text-[10px] font-mono text-indigo-600">POST /peers/alex/chat</span>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-900 space-y-2">
+              <p>Dall'analisi delle evidenze di Alex, l'architettura supporta Dark/Light via CSS variables.<span class="cursor-blink text-indigo-600 font-bold">▍</span></p>
+              <!-- Evidence box light -->
+              <div class="p-2 rounded bg-white border border-slate-200 text-[10px] text-slate-700 font-mono space-y-1 shadow-sm">
+                <div class="text-indigo-700 font-sans font-semibold">Audit Evidenze Honcho:</div>
+                <div>&bull; Consultate 2 conclusioni (explicit, deductive)</div>
+                <div>&bull; Messaggi analizzati in session-01</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error & Loading States Light -->
+          <div class="space-y-2">
+            <div class="p-2.5 rounded-lg bg-rose-50 border border-rose-200 text-[11px] text-rose-900 flex items-center justify-between">
+              <span><strong>Errore 500 (Simulato):</strong> Timeout query verso Honcho.</span>
+              <button class="px-2 py-0.5 rounded bg-rose-600 text-white font-medium text-[10px]">Riprova</button>
+            </div>
+            <div class="h-6 rounded shimmer-light"></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- INTERACTIVE CONTRAST RATIO AUDIT TABLE -->
+    <!-- ========================================================================= -->
+    <section class="rounded-2xl bg-slate-900 border border-slate-800 p-6 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-base font-semibold text-white">Tabella Comparativa dei Contrasti Calcolati</h2>
+          <p class="text-xs text-slate-400">Valutazione fotometrica matematica basata sulla formula di luminanza relativa standard WCAG 2.1.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 rounded bg-slate-800 text-[11px] font-mono text-slate-300 border border-slate-700">Formula: (L1 + 0.05) / (L2 + 0.05)</span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs text-slate-300">
+          <thead class="bg-slate-950/60 text-slate-400 font-mono text-[11px] uppercase border-b border-slate-800">
+            <tr>
+              <th class="py-2.5 px-3">Elemento UI</th>
+              <th class="py-2.5 px-3">Colore Dark</th>
+              <th class="py-2.5 px-3">Sfondo Dark</th>
+              <th class="py-2.5 px-3 text-center">Ratio Dark</th>
+              <th class="py-2.5 px-3">Colore Light</th>
+              <th class="py-2.5 px-3">Sfondo Light</th>
+              <th class="py-2.5 px-3 text-center">Ratio Light</th>
+              <th class="py-2.5 px-3 text-right">Standard WCAG</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800 font-sans">
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Testo Primario (Body/Titoli)</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#f8fafc</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">18.57:1</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#0f172a</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#f8fafc (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">17.06:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-mono">AAA (&ge;7:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Testo su Scheda (Card/Modal)</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#f8fafc</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#1e293b (Elevated)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">13.98:1</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#0f172a</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#ffffff (Card)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">17.85:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-mono">AAA (&ge;7:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Testo Secondario (Meta/Label)</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#94a3b8</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">7.58:1</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#475569</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#f8fafc (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">7.24:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-mono">AAA (&ge;7:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Testo Terziario (Timestamp)</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#7e8d9f</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">5.73:1</td>
+              <td class="py-2.5 px-3 font-mono text-slate-300">#64748b</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#ffffff (Card)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">4.76:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-400 font-mono">AA (&ge;4.5:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Badge Explicit (Fatti estratti)</td>
+              <td class="py-2.5 px-3 font-mono text-emerald-400">#34d399</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">10.11:1</td>
+              <td class="py-2.5 px-3 font-mono text-emerald-700">#047857</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#ecfdf5 (Badge bg)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">5.21:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-400 font-mono">AA (&ge;4.5:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Badge Deductive (Deduzioni)</td>
+              <td class="py-2.5 px-3 font-mono text-indigo-400">#818cf8</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">6.51:1</td>
+              <td class="py-2.5 px-3 font-mono text-indigo-700">#4338ca</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#eef2ff (Badge bg)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">7.07:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-mono">AAA (&ge;7:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Badge Inductive (Generalizzazioni)</td>
+              <td class="py-2.5 px-3 font-mono text-amber-400">#fbbf24</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">11.64:1</td>
+              <td class="py-2.5 px-3 font-mono text-amber-800">#92400e</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#fffbeb (Badge bg)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">6.84:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-400 font-mono">AA (&ge;4.5:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Badge Contradiction (Conflitti)</td>
+              <td class="py-2.5 px-3 font-mono text-rose-400">#fb7185</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#090d16 (Canvas)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">7.22:1</td>
+              <td class="py-2.5 px-3 font-mono text-rose-700">#be123c</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#fff1f2 (Badge bg)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-indigo-400">5.72:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-indigo-500/10 text-indigo-400 font-mono">AA (&ge;4.5:1)</span></td>
+            </tr>
+            <tr class="hover:bg-slate-800/40">
+              <td class="py-2.5 px-3 font-medium text-white">Testo Banner Errore (500)</td>
+              <td class="py-2.5 px-3 font-mono text-rose-200">#fecdd3</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#4c0519 (Bg Rose 950)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">11.08:1</td>
+              <td class="py-2.5 px-3 font-mono text-rose-900">#9f1239</td>
+              <td class="py-2.5 px-3 font-mono text-slate-400">#fff1f2 (Bg Rose 50)</td>
+              <td class="py-2.5 px-3 text-center font-mono font-bold text-emerald-400">7.30:1</td>
+              <td class="py-2.5 px-3 text-right"><span class="px-2 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-mono">AAA (&ge;7:1)</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-[11px] text-slate-400 pt-2 border-t border-slate-800 flex justify-between">
+        <span>* Nota metodologica: calcoli condotti su coordinate RGB lineari secondo specifica WCAG 2.1 (Relative Luminance).</span>
+        <span class="text-indigo-400 font-mono">Disabilitati esenti per SC 1.4.3 (2.56:1)</span>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function setViewMode(mode) {
+      const container = document.getElementById('dualPaneContainer');
+      const paneDark = document.getElementById('paneDark');
+      const paneLight = document.getElementById('paneLight');
+
+      ['split', 'dark', 'light'].forEach(m => {
+        const btn = document.getElementById('vBtn-' + m);
+        if (btn) {
+          if (m === mode) {
+            btn.className = 'px-2.5 py-1 rounded text-[11px] font-medium bg-indigo-600 text-white transition';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition';
+          }
+        }
+      });
+
+      if (mode === 'split') {
+        container.className = 'grid grid-cols-1 lg:grid-cols-2 gap-6';
+        paneDark.classList.remove('hidden');
+        paneLight.classList.remove('hidden');
+      } else if (mode === 'dark') {
+        container.className = 'grid grid-cols-1 gap-6 max-w-4xl mx-auto';
+        paneDark.classList.remove('hidden');
+        paneLight.classList.add('hidden');
+      } else if (mode === 'light') {
+        container.className = 'grid grid-cols-1 gap-6 max-w-4xl mx-auto';
+        paneDark.classList.add('hidden');
+        paneLight.classList.remove('hidden');
+      }
+    }
+  </script>
+</body>
+</html>

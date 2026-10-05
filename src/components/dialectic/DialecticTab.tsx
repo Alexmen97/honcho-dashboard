@@ -269,11 +269,11 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
           {/* Peer Perspective: Anchor & Target */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-1.5 text-xs font-mono">
-              <span className="text-slate-400">Anchor Peer:</span>
+              <span className="text-slate-600 dark:text-slate-400">Anchor Peer:</span>
               <select
                 value={anchorPeerId}
                 onChange={(e) => setAnchorPeerId(e.target.value)}
-                className="px-2 py-1 rounded bg-surface-subtle border border-slate-700 text-white text-xs font-mono focus:ring-1 focus:ring-brand-500"
+                className="px-2 py-1 rounded bg-surface border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-mono focus:ring-1 focus:ring-brand-500"
               >
                 <option value="alex">alex</option>
                 {availablePeers
@@ -287,26 +287,26 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
             </div>
 
             <div className="flex items-center gap-1.5 text-xs font-mono">
-              <span className="text-slate-500">Target (opz.):</span>
+              <span className="text-slate-600 dark:text-slate-400">Target (opz.):</span>
               <input
                 type="text"
                 value={targetPeerId}
                 onChange={(e) => setTargetPeerId(e.target.value)}
                 placeholder="es. user / peer"
-                className="w-24 px-2 py-1 rounded bg-surface-subtle border border-slate-700 text-white text-xs font-mono placeholder-slate-600 focus:ring-1 focus:ring-brand-500"
+                className="w-24 px-2 py-1 rounded bg-surface border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-mono placeholder-slate-400 dark:placeholder-slate-600 focus:ring-1 focus:ring-brand-500"
               />
             </div>
 
             {/* Scope vs Session Mutual Exclusivity */}
             <div className="flex items-center gap-1.5 text-xs bg-surface-subtle/80 p-1 rounded-lg border border-border-subtle">
-              <span className="text-[11px] text-slate-500 font-mono px-1">Scope:</span>
+              <span className="text-[11px] text-slate-600 dark:text-slate-400 font-mono px-1">Scope:</span>
               <button
                 type="button"
                 onClick={() => handleScopeModeChange('none')}
                 className={`px-2 py-0.5 rounded text-[11px] font-mono transition ${
                   scopeMode === 'none'
-                    ? 'bg-surface-elevated text-white font-medium'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-surface-elevated text-slate-900 dark:text-white font-medium shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Globale
@@ -316,8 +316,8 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                 onClick={() => handleScopeModeChange('session')}
                 className={`px-2 py-0.5 rounded text-[11px] font-mono transition ${
                   scopeMode === 'session'
-                    ? 'bg-surface-elevated text-brand-300 font-medium'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200 dark:bg-surface-elevated dark:text-brand-300 dark:border-transparent font-medium shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Sessione
@@ -327,8 +327,8 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                 onClick={() => handleScopeModeChange('scope')}
                 className={`px-2 py-0.5 rounded text-[11px] font-mono transition ${
                   scopeMode === 'scope'
-                    ? 'bg-surface-elevated text-emerald-300 font-medium'
-                    : 'text-slate-400 hover:text-white'
+                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-surface-elevated dark:text-emerald-300 dark:border-transparent font-medium shadow-sm'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Named Scope
@@ -340,7 +340,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                   value={selectedSessionId}
                   onChange={(e) => setSelectedSessionId(e.target.value)}
                   placeholder="ID Sessione (es. session-01)"
-                  className="w-32 px-2 py-0.5 rounded bg-surface border border-slate-700 text-white text-xs font-mono placeholder-slate-600"
+                  className="w-32 px-2 py-0.5 rounded bg-surface border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-mono placeholder-slate-400 dark:placeholder-slate-600"
                 />
               )}
 
@@ -350,7 +350,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                   value={scopeName}
                   onChange={(e) => setScopeName(e.target.value)}
                   placeholder="Nome Scope"
-                  className="w-32 px-2 py-0.5 rounded bg-surface border border-slate-700 text-white text-xs font-mono placeholder-slate-600"
+                  className="w-32 px-2 py-0.5 rounded bg-surface border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-mono placeholder-slate-400 dark:placeholder-slate-600"
                 />
               )}
             </div>
@@ -359,11 +359,11 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
           {/* Reasoning & Stream Settings */}
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5 text-xs font-mono">
-              <span className="text-slate-400">Ragionamento:</span>
+              <span className="text-slate-600 dark:text-slate-400">Ragionamento:</span>
               <select
                 value={reasoningLevel}
                 onChange={(e) => setReasoningLevel(e.target.value as ReasoningLevel)}
-                className="px-2 py-1 rounded bg-surface-subtle border border-slate-700 text-white text-xs font-mono focus:ring-1 focus:ring-brand-500"
+                className="px-2 py-1 rounded bg-surface border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-mono focus:ring-1 focus:ring-brand-500"
               >
                 <option value="minimal">minimal</option>
                 <option value="low">low</option>
@@ -373,17 +373,17 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
               </select>
             </div>
 
-            <label className="flex items-center gap-1.5 text-xs text-slate-300 font-mono cursor-pointer select-none">
+            <label className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 font-mono cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={useStream}
                 onChange={(e) => setUseStream(e.target.checked)}
-                className="rounded bg-surface-subtle border-slate-700 text-brand-500 accent-brand-500"
+                className="rounded bg-surface border-slate-300 dark:border-slate-700 text-brand-500 accent-brand-500"
               />
               <span>SSE</span>
             </label>
 
-            <label className="flex items-center gap-1.5 text-xs text-slate-300 font-mono cursor-pointer select-none">
+            <label className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 font-mono cursor-pointer select-none">
               <input
                 type="checkbox"
                 checked={includeEvidence}
@@ -395,8 +395,8 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
           </div>
         </div>
 
-        <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1">
-          <Info className="w-3 h-3 text-slate-600 shrink-0" />
+        <div className="text-[10px] text-slate-600 dark:text-slate-400 font-mono flex items-center gap-1">
+          <Info className="w-3 h-3 text-slate-500 dark:text-slate-400 shrink-0" />
           <span>
             {scopeMode === 'scope'
               ? 'Named Scope attivo: session_id e filters esclusi dalla richiesta per vincolo API schema.'
@@ -410,10 +410,10 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
       {/* Chat Messages Feed */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 font-sans">
         {messages.length === 0 && (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500">
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-600 dark:text-slate-400">
             <Sparkles className="w-10 h-10 mb-3 text-brand-500/50 animate-pulse" />
-            <h4 className="text-sm font-semibold text-slate-300">Dialectic Reasoning Playground</h4>
-            <p className="text-xs text-slate-500 max-w-md mt-1 leading-relaxed">
+            <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Dialectic Reasoning Playground</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mt-1 leading-relaxed">
               Interroga la rappresentazione cognitiva di Honcho con streaming SSE in tempo reale ed ispezione deterministica delle evidenze consultate.
             </p>
           </div>
@@ -424,34 +424,34 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
           return (
             <div
               key={msg.id}
-              className={`p-3.5 rounded-xl border max-w-[90%] sm:max-w-[80%] ${
+              className={`p-3.5 rounded-xl border max-w-[90%] sm:max-w-[80%] shadow-sm ${
                 isUser
-                  ? 'ml-auto bg-surface-elevated/90 border-slate-700 text-slate-100'
-                  : 'mr-auto bg-surface/90 border-border-subtle text-slate-200'
+                  ? 'ml-auto bg-brand-50 border-brand-200 text-slate-900 dark:bg-surface-elevated/90 dark:border-slate-700 dark:text-slate-100'
+                  : 'mr-auto bg-surface border-border-subtle text-slate-800 dark:text-slate-200'
               }`}
             >
-              <div className="flex items-center justify-between gap-3 text-[11px] mb-2 pb-1.5 border-b border-white/5 font-mono">
+              <div className="flex items-center justify-between gap-3 text-[11px] mb-2 pb-1.5 border-b border-black/5 dark:border-white/5 font-mono">
                 <div className="flex items-center gap-1.5">
                   {isUser ? (
                     <>
-                      <User className="w-3.5 h-3.5 text-brand-400" />
-                      <span className="font-semibold text-slate-300">Tu</span>
+                      <User className="w-3.5 h-3.5 text-brand-500 dark:text-brand-400" />
+                      <span className="font-semibold text-slate-800 dark:text-slate-300">Tu</span>
                     </>
                   ) : (
                     <>
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="font-semibold text-emerald-400">{anchorPeerId} (Dialectic)</span>
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-500 dark:text-emerald-400" />
+                      <span className="font-semibold text-emerald-600 dark:text-emerald-400">{anchorPeerId} (Dialectic)</span>
                     </>
                   )}
                 </div>
-                <span className="text-slate-500">{msg.timestamp}</span>
+                <span className="text-slate-500 dark:text-slate-400">{msg.timestamp}</span>
               </div>
 
               {/* Safe content rendering */}
               <div className="text-xs leading-relaxed whitespace-pre-wrap break-words font-sans">
                 {msg.content}
                 {msg.isStreaming && (
-                  <span className="inline-block w-1.5 h-3.5 bg-brand-400 ml-1 cursor-blink" />
+                  <span className="inline-block w-1.5 h-3.5 bg-brand-500 dark:bg-brand-400 ml-1 cursor-blink" />
                 )}
               </div>
 
@@ -462,7 +462,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                     onClick={() =>
                       setExpandedEvidenceId(expandedEvidenceId === msg.id ? null : msg.id)
                     }
-                    className="flex items-center justify-between w-full text-[11px] font-mono text-brand-400 hover:text-brand-300 transition"
+                    className="flex items-center justify-between w-full text-[11px] font-mono text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 transition"
                   >
                     <div className="flex items-center gap-1.5">
                       <Layers className="w-3.5 h-3.5" />
@@ -486,23 +486,23 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                       {/* Conclusions Accessed */}
                       {msg.evidence.conclusions && msg.evidence.conclusions.length > 0 && (
                         <div className="p-2.5 rounded-lg bg-surface-subtle/80 border border-border-subtle">
-                          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                            <Compass className="w-3 h-3 text-amber-400" />
+                          <div className="text-[10px] font-mono text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                            <Compass className="w-3 h-3 text-amber-500 dark:text-amber-400" />
                             <span>Conclusioni Lette ({msg.evidence.conclusions.length}):</span>
                           </div>
                           <div className="space-y-1.5">
                             {msg.evidence.conclusions.map((c) => (
                               <div
                                 key={c.id}
-                                className="p-2 rounded bg-surface border border-slate-800 text-[11px] font-sans"
+                                className="p-2 rounded bg-surface border border-slate-200 dark:border-slate-800 text-[11px] font-sans"
                               >
                                 <div className="flex items-center justify-between mb-1">
                                   <Badge level={c.level}>{c.level}</Badge>
-                                  <span className="font-mono text-[10px] text-slate-500">
+                                  <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
                                     {c.observer_id} → {c.observed_id}
                                   </span>
                                 </div>
-                                <div className="text-slate-300">{c.content}</div>
+                                <div className="text-slate-800 dark:text-slate-300">{c.content}</div>
                               </div>
                             ))}
                           </div>
@@ -512,8 +512,8 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                       {/* Messages Accessed (provenance only, on-demand fetch) */}
                       {msg.evidence.messages && msg.evidence.messages.length > 0 && (
                         <div className="p-2.5 rounded-lg bg-surface-subtle/80 border border-border-subtle">
-                          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                            <FileText className="w-3 h-3 text-brand-400" />
+                          <div className="text-[10px] font-mono text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                            <FileText className="w-3 h-3 text-brand-500 dark:text-brand-400" />
                             <span>Messaggi Consultati ({msg.evidence.messages.length}):</span>
                           </div>
                           <div className="space-y-1.5">
@@ -523,26 +523,26 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                               return (
                                 <div
                                   key={mRef.id}
-                                  className="p-2 rounded bg-surface border border-slate-800 text-[11px] font-mono"
+                                  className="p-2 rounded bg-surface border border-slate-200 dark:border-slate-800 text-[11px] font-mono"
                                 >
                                   <div className="flex items-center justify-between">
-                                    <span className="text-slate-300">
+                                    <span className="text-slate-800 dark:text-slate-300">
                                       {mRef.peer_id} @ {mRef.session_id}
                                     </span>
                                     {!isFetched ? (
                                       <button
                                         onClick={() => handleFetchMessageOnDemand(mRef)}
                                         disabled={isFetching}
-                                        className="text-[10px] text-brand-400 hover:text-brand-300 underline"
+                                        className="text-[10px] text-brand-600 dark:text-brand-400 hover:text-brand-500 dark:hover:text-brand-300 underline"
                                       >
                                         {isFetching ? 'Caricamento...' : 'Leggi contenuto'}
                                       </button>
                                     ) : (
-                                      <span className="text-[10px] text-emerald-400">Caricato</span>
+                                      <span className="text-[10px] text-emerald-600 dark:text-emerald-400">Caricato</span>
                                     )}
                                   </div>
                                   {isFetched && (
-                                    <div className="mt-1 pt-1 border-t border-slate-800 font-sans text-slate-300 text-xs">
+                                    <div className="mt-1 pt-1 border-t border-slate-200 dark:border-slate-800 font-sans text-slate-800 dark:text-slate-300 text-xs">
                                       {fetchedMessages[mRef.id].content}
                                     </div>
                                   )}
@@ -556,19 +556,19 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                       {/* Tool Calls */}
                       {msg.evidence.tool_calls && msg.evidence.tool_calls.length > 0 && (
                         <div className="p-2.5 rounded-lg bg-surface-subtle/80 border border-border-subtle">
-                          <div className="text-[10px] font-mono text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
-                            <Wrench className="w-3 h-3 text-emerald-400" />
+                          <div className="text-[10px] font-mono text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1">
+                            <Wrench className="w-3 h-3 text-emerald-500 dark:text-emerald-400" />
                             <span>Invocazioni Tool ({msg.evidence.tool_calls.length}):</span>
                           </div>
                           <div className="space-y-1 font-mono text-[11px]">
                             {msg.evidence.tool_calls.map((t, idx) => (
                               <div
                                 key={idx}
-                                className="p-1.5 rounded bg-surface border border-slate-800 text-slate-300"
+                                className="p-1.5 rounded bg-surface border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-300"
                               >
-                                <span className="text-brand-300">{t.tool_name}</span>
+                                <span className="text-brand-600 dark:text-brand-300 font-medium">{t.tool_name}</span>
                                 {t.tool_input && (
-                                  <span className="text-slate-500 ml-1">
+                                  <span className="text-slate-500 dark:text-slate-400 ml-1">
                                     ({JSON.stringify(t.tool_input)})
                                   </span>
                                 )}
@@ -578,7 +578,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                         </div>
                       )}
 
-                      <div className="text-[10px] text-slate-500 font-mono italic">
+                      <div className="text-[10px] text-slate-500 dark:text-slate-400 font-mono italic">
                         * Le evidenze tracciano le letture deterministiche dell'agente (auditing trace).
                       </div>
                     </div>
@@ -593,11 +593,11 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
       </div>
 
       {/* Input / Cancel / Retry Bar */}
-      <div className="p-3 border-t border-border-subtle bg-surface/70 space-y-2 shrink-0">
+      <div className="p-3 border-t border-border-subtle bg-surface/80 space-y-2 shrink-0">
         {chatError && (
-          <div className="p-2 rounded bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-mono flex items-center justify-between">
+          <div className="p-2 rounded bg-rose-50 border border-rose-200 dark:bg-rose-500/10 dark:border-rose-500/30 text-rose-700 dark:text-rose-300 text-xs font-mono flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 shrink-0 text-rose-400" />
+              <ShieldAlert className="w-4 h-4 shrink-0 text-rose-500 dark:text-rose-400" />
               <span>{chatError}</span>
             </div>
             <button
@@ -605,7 +605,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
                 const lastUserMsg = [...messages].reverse().find((m) => m.sender === 'user');
                 if (lastUserMsg) handleSubmit(undefined, lastUserMsg.content);
               }}
-              className="px-2 py-0.5 rounded bg-rose-500/20 hover:bg-rose-500/30 text-[11px] text-rose-200 transition flex items-center gap-1"
+              className="px-2 py-0.5 rounded bg-rose-100 hover:bg-rose-200 text-rose-800 dark:bg-rose-500/20 dark:hover:bg-rose-500/30 dark:text-rose-200 text-[11px] transition flex items-center gap-1"
             >
               <RefreshCw className="w-3 h-3" />
               Riprova
@@ -620,14 +620,14 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
             onChange={(e) => setInputQuery(e.target.value)}
             disabled={isGenerating}
             placeholder="Poni una domanda dialettica alla cognizione di Honcho..."
-            className="flex-1 px-3 py-2 rounded-lg bg-surface-subtle border border-slate-700 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-50"
+            className="flex-1 px-3 py-2 rounded-lg bg-surface border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 disabled:opacity-50"
           />
 
           {isGenerating ? (
             <button
               type="button"
               onClick={cancelGeneration}
-              className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-medium transition flex items-center gap-1.5 focus:ring-2 focus:ring-rose-400 shrink-0"
+              className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-medium transition flex items-center gap-1.5 focus:ring-2 focus:ring-rose-400 shrink-0 shadow-sm"
             >
               <Square className="w-3.5 h-3.5 fill-current" />
               <span>Interrompi</span>
@@ -636,7 +636,7 @@ export const DialecticTab: React.FC<DialecticTabProps> = ({
             <button
               type="submit"
               disabled={!inputQuery.trim()}
-              className="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition disabled:opacity-40 flex items-center gap-1.5 focus:ring-2 focus:ring-brand-500 shrink-0"
+              className="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition disabled:opacity-40 flex items-center gap-1.5 focus:ring-2 focus:ring-brand-500 shrink-0 shadow-sm"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Invia</span>
