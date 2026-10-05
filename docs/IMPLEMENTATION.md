@@ -1,0 +1,33 @@
+# Honcho Cognition Studio — approved implementation scope
+
+UI v1.1 approved by Alex via @hermes. Implementation authorized; release requires independent QA and verified deployment. Root: /opt/data/projects/honcho-dashboard. Preserve mockup/ and existing docs. Live OpenAPI snapshot: docs/openapi-3.2.2.json, fetched and version verified by tech lead. API: http://192.168.4.91:8000; GET /health returned {"status":"ok"}. Treat designer runtime SSE notes as unverified until independently exercised.
+
+## Architecture and security
+React + TypeScript + Vite SPA, locally compiled Tailwind (no runtime CDN), TanStack Query. Feature folders: workspaces, sessions, peers, conclusions, dialectic; shared typed API client, UI primitives, routing. Generate types from snapshot with reproducible command. Server state keys include workspace plus session/peer/filter/pagination. On workspace switch cancel outstanding requests and clear scoped UI; never display stale data from another workspace.
+
+Minimal Node same-origin gateway serving built assets and allowlisted /api routes to fixed Honcho origin. Do not implement an arbitrary target proxy. Validate route/method, encode identifiers, reject traversal and unexpected origins. Optional HONCHO_API_KEY stays server-side; never commit/log tokens or put them in VITE variables. No credentials in browser or logs. Do not expose service publicly before access control is agreed; default loopback. Vite dev proxy alone is not production deployment. Gateway must support SSE without buffering, upstream cancellation and bounded non-stream timeouts. Configure auth/access control before LAN exposure. No CORS wildcard with credentials.
+
+## API contracts
+Use snapshot as source of truth; docs/api-schema-notes.md is explanatory, not authoritative. POST list endpoints use page/size/reverse QUERY parameters and optional filter body, return items/total/page/size/pages. Do not fabricate metrics or imply container telemetry: only actual API-derived counts and queue status. GET /health is API health, not postgres/redis health.
+
+Workspace: POST /v3/workspaces/list, POST /v3/workspaces, GET /v3/workspaces/{workspace_id}/queue/status.
+Sessions: POST /v3/workspaces/{workspace_id}/sessions/list and /sessions; POST /sessions/{session_id}/messages/list. Message creation, when user invokes it: POST /messages with {messages:[{content,peer_id,metadata?}]}; server assigns message IDs; batch 1..100. No automatic retries on create mutations.
+Peers: POST /peers/list, POST /peers, GET /peers/{peer_id}/card and /context; POST /representation is curated retrieval, NOT re-embedding. Use actual methods/schema for optional metadata update. Handle peer_card null.
+Conclusions: POST /conclusions/list and /query; query {query,top_k,distance?,filters?}, top_k 1..100, accepted distance threshold 0..1. GET /conclusions/{conclusion_id} for detail/premises. Cosine distance mathematically can exceed 1; 0..1 is this API threshold constraint, not universal distance range. Show actual returned fields only.
+Dialectic: POST /peers/{peer_id}/chat with query 1..10000 chars, reasoning_level minimal|low|medium|high|max, stream, include_evidence. Anchor peer and target are distinct concepts; explain perspective. scope excludes session_id AND filters; omit inactive fields. Evidence is accessed material, not guaranteed citations or full chain of thought. Fetch referenced message only on demand. Treat content as untrusted; never render raw HTML. SSE via fetch POST + incremental TextDecoder buffering; tolerate split UTF-8, split events, CRLF, multiple data lines, keep-alives and completion/error. No blind reconnect/replay of inference POST; offer explicit retry or buffered mode. Cancel with AbortController. Confirm actual frames on authorized test data.
+
+## Kanban tickets and acceptance
+Owner developer except independent QA and final release gate.
+HCS-01 IN PROGRESS — Scaffold/build/toolchain, typed client and gateway. Acceptance: reproducible install/build/typecheck; local CSS; secret isolation; route allowlist; health smoke.
+HCS-02 READY — Workspace navigation/list/create, pagination and real overview. Acceptance: cross-workspace isolation, creation validation, loading/empty/error/retry; no invented server stats.
+HCS-03 READY — Session list/create and message timeline/composer. Acceptance: correct pagination and batch body, peer selection, safe text, duplicates avoided on retries.
+HCS-04 READY — Peer list/create/details/card/context/representation. Acceptance: null card, real selection (no hardcoded alex), schema-correct create, clear retrieval semantics.
+HCS-05 READY — Conclusions list/filter/detail and semantic query. Acceptance: actual backend results, validated thresholds, distinguish list from semantic search, premise IDs resolve safely.
+HCS-06 READY — Dialectic playground and evidence. Acceptance: scope exclusivity, reasoning enum, streaming/cancel and explicit retry, evidence provenance, safe rendering.
+HCS-07 READY — Integration/responsive/accessibility/testing/package. Acceptance: mobile and desktop navigation, keyboard and focus, readable contrast, unit/integration/E2E passes, README env/run/build/test; no runtime remote CDN; local preview exercised.
+HCS-08 BLOCKED on developer handoff — Independent QA, owner qa-reviewer. Verify source and actual execution; classify defects; report commands/results and artifact paths. Production build and localhost HTTP smoke mandatory. Test auth/proxy misuse, XSS, isolation, malformed input, abort/disconnect, unavailable API, pagination and mutation errors.
+HCS-09 BLOCKED on QA and exposure decision — Release verification, owner tech-lead. No public/LAN URL claimed until reachable from intended client and access policy confirmed. Umbrel proxy/packaging is separate from opening a container port.
+
+## Working agreement
+Developer send milestones with exact paths, commands and real test results; update docs/KANBAN.md as implementation progresses. Mark missing coverage and blockers explicitly. QA may prepare independent test plan now but does not sign off before receiving implementation. Designer mockup is visual reference only: never ship its sample profiles, simulated search or fake metrics as real data.
+Live writes must be explicit and limited to a dedicated test workspace created for this project; avoid modifying existing test-hermes-workspace or alex histories. No destructive cleanup or dreaming jobs without separate approval. Read-only checks against existing data must not publish personal content. If real chat test creates cost/side effects, report and keep tests minimal within project test workspace.

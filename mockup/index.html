@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="it" class="dark h-full bg-[#090d16]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honcho Cognition Studio — Alex Dashboard</title>
+  <!-- Tailwind CSS bundled locally for 100% offline self-containment -->
+  <script src="./tailwind.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            canvas: '#090d16',
+            surface: {
+              DEFAULT: '#0f172a',
+              subtle: '#131d31',
+              elevated: '#1e293b',
+              hover: '#27354f'
+            },
+            border: {
+              subtle: 'rgba(255, 255, 255, 0.08)',
+              active: 'rgba(99, 102, 241, 0.4)'
+            },
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            },
+            level: {
+              explicit: '#10b981',
+              deductive: '#6366f1',
+              inductive: '#f59e0b',
+              contradiction: '#f43f5e'
+            }
+          },
+          fontFamily: {
+            sans: ['Geist', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'ui-monospace', 'Menlo', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar for dense Linear-like feel */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090d16;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+    .shimmer {
+      background: linear-gradient(90deg, rgba(30, 41, 59, 0.5) 0%, rgba(51, 65, 85, 0.8) 50%, rgba(30, 41, 59, 0.5) 100%);
+      background-size: 200% 100%;
+      animation: shimmer 1.6s infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .cursor-blink {
+      animation: blink 0.8s infinite;
+    }
+  </style>
+</head>
+<body class="h-full text-slate-100 flex flex-col font-sans antialiased overflow-hidden select-none">
+
+  <!-- ========================================================================= -->
+  <!-- 1. TOP GLOBAL NAVBAR -->
+  <!-- ========================================================================= -->
+  <header class="h-14 border-b border-border-subtle bg-surface/90 backdrop-blur px-4 flex items-center justify-between z-30 shrink-0">
+    <div class="flex items-center gap-3">
+      <!-- Mobile menu trigger -->
+      <button onclick="toggleMobileNav()" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-surface-elevated focus:outline-none" aria-label="Apri menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+
+      <!-- Brand Logo & Identity -->
+      <div class="flex items-center gap-2.5">
+        <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-brand-600 via-indigo-500 to-sky-400 flex items-center justify-center shadow-lg shadow-brand-500/20">
+          <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div class="flex items-baseline gap-1.5">
+          <span class="font-semibold text-sm tracking-tight text-white">Honcho</span>
+          <span class="text-xs font-mono text-slate-400">Studio</span>
+        </div>
+      </div>
+
+      <div class="h-4 w-px bg-slate-800 mx-1 hidden sm:block"></div>
+
+      <!-- Workspace Selector Dropdown -->
+      <div class="relative">
+        <button id="wsDropdownBtn" onclick="toggleWsDropdown()" class="flex items-center gap-2 px-2.5 py-1.5 rounded-md text-xs font-medium bg-surface-subtle border border-slate-700/60 hover:border-slate-600 text-slate-200 transition">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span id="activeWsLabel" class="font-mono text-slate-300">test-hermes-workspace</span>
+          <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div id="wsDropdownMenu" class="hidden absolute left-0 mt-1.5 w-64 rounded-lg bg-surface border border-slate-700 shadow-2xl p-1.5 z-50 text-xs">
+          <div class="px-2 py-1 text-[11px] font-medium text-slate-400 uppercase tracking-wider">Workspace Disponibili</div>
+          <button onclick="selectWorkspace('test-hermes-workspace')" class="w-full text-left px-2 py-1.5 rounded flex items-center justify-between bg-surface-elevated text-white">
+            <span class="font-mono">test-hermes-workspace</span>
+            <span class="text-[10px] text-emerald-400 font-sans">Attivo</span>
+          </button>
+          <button onclick="selectWorkspace('alex-research-v3')" class="w-full text-left px-2 py-1.5 rounded flex items-center justify-between hover:bg-surface-elevated text-slate-300 transition">
+            <span class="font-mono">alex-research-v3</span>
+            <span class="text-[10px] text-slate-500 font-sans">Archivio</span>
+          </button>
+          <div class="my-1 border-t border-slate-800"></div>
+          <button onclick="openModal('newWorkspaceModal'); toggleWsDropdown();" class="w-full text-left px-2 py-1.5 rounded text-brand-400 hover:bg-brand-500/10 flex items-center gap-1.5 font-medium transition">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Nuovo Workspace...
+          </button>
+        </div>
+      </div>
+
+      <!-- Target Peer Pill -->
+      <div class="hidden lg:flex items-center gap-1.5 px-2 py-1 rounded bg-slate-800/80 border border-slate-700/40 text-xs text-slate-300">
+        <span class="text-[11px] text-slate-400">Target Peer:</span>
+        <span class="font-mono text-indigo-300 font-semibold">alex</span>
+      </div>
+    </div>
+
+    <!-- Center/Right: Interactive State Simulator & Server Health -->
+    <div class="flex items-center gap-3">
+      <!-- STATE SIMULATOR BAR (Crucial for Tech Lead review) -->
+      <div class="flex items-center bg-surface-subtle p-1 rounded-lg border border-slate-800 text-xs">
+        <span class="text-[10px] font-medium text-slate-400 px-2 uppercase tracking-wider hidden sm:inline">Stato UI:</span>
+        <button onclick="setSimState('normal')" id="stateBtn-normal" class="px-2.5 py-1 rounded text-[11px] font-medium bg-brand-600 text-white shadow-sm transition">Normale</button>
+        <button onclick="setSimState('empty')" id="stateBtn-empty" class="px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition">Vuoto</button>
+        <button onclick="setSimState('loading')" id="stateBtn-loading" class="px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition">Loading</button>
+        <button onclick="setSimState('error')" id="stateBtn-error" class="px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-rose-400 transition">Errore 500</button>
+      </div>
+
+      <!-- Server Connection Badge (Simulated Target) -->
+      <div class="hidden xl:flex items-center gap-2 px-2.5 py-1 rounded-full bg-indigo-950/40 border border-indigo-500/30 text-indigo-300 text-xs font-mono">
+        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+        <span>[Simulazione Demo] Target: Honcho v3.2.2 (192.168.4.91:8000)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Global Error Notification Banner (Visible in Error State) -->
+  <div id="globalErrorBanner" class="hidden bg-rose-950/90 border-b border-rose-500/30 px-4 py-2.5 text-xs text-rose-200 flex items-center justify-between shrink-0">
+    <div class="flex items-center gap-2">
+      <svg class="w-4 h-4 text-rose-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <span><strong>Errore di connessione API [500]:</strong> Impossibile completare la query semantica verso Honcho. Verifica lo stato del container e i log del demone.</span>
+    </div>
+    <button onclick="setSimState('normal')" class="px-2.5 py-1 rounded bg-rose-900/60 hover:bg-rose-800 text-white font-medium border border-rose-700/50 transition">Riprova Connessione</button>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN WORKSPACE BODY (Sidebar + Stage) -->
+  <!-- ========================================================================= -->
+  <div class="flex flex-1 overflow-hidden relative">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="w-60 border-r border-border-subtle bg-surface/50 flex flex-col justify-between shrink-0 hidden md:flex">
+      <nav class="p-3 space-y-1" role="tablist">
+        <div class="px-3 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Aree Operative</div>
+
+        <button onclick="switchTab('tab-overview')" id="nav-tab-overview" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated hover:text-white transition active-nav-pill">
+          <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Workspace & Overview
+        </button>
+
+        <button onclick="switchTab('tab-sessions')" id="nav-tab-sessions" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated hover:text-white transition">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            Sessioni & Messaggi
+          </div>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300">1</span>
+        </button>
+
+        <button onclick="switchTab('tab-peer')" id="nav-tab-peer" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated hover:text-white transition">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            Profilo Peer & Card
+          </div>
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+        </button>
+
+        <button onclick="switchTab('tab-conclusions')" id="nav-tab-conclusions" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated hover:text-white transition">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            Memoria Conclusioni
+          </div>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-indigo-950/60 text-indigo-300 border border-indigo-500/20">4</span>
+        </button>
+
+        <button onclick="switchTab('tab-dialectic')" id="nav-tab-dialectic" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:bg-surface-elevated hover:text-white transition">
+          <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+          Dialectic Chat Lab
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer: Session Info & Dreaming status -->
+      <div class="p-3 border-t border-border-subtle bg-surface-subtle/40">
+        <div class="rounded-lg bg-surface p-2.5 border border-slate-800 text-[11px] space-y-1.5">
+          <div class="flex items-center justify-between text-slate-400">
+            <span>Honcho Engine</span>
+            <span class="text-emerald-400 font-mono">v3.2.2</span>
+          </div>
+          <div class="flex items-center justify-between text-slate-400">
+            <span>Autonomous Dreaming</span>
+            <span class="text-indigo-400 font-medium">Attivo</span>
+          </div>
+          <div class="text-[10px] text-slate-500 font-mono pt-1 border-t border-slate-800">
+            Queue: 0 pending tasks
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MOBILE OFF-CANVAS DRAWER -->
+    <div id="mobileDrawer" class="hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm md:hidden" onclick="toggleMobileNav()">
+      <div class="w-64 h-full bg-surface border-r border-slate-800 p-4 flex flex-col justify-between" onclick="event.stopPropagation()">
+        <div>
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-semibold text-sm">Honcho Studio</span>
+            <button onclick="toggleMobileNav()" class="text-slate-400 hover:text-white">✕</button>
+          </div>
+          <nav class="space-y-1.5 text-xs">
+            <button onclick="switchTab('tab-overview'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated">Workspace & Overview</button>
+            <button onclick="switchTab('tab-sessions'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated">Sessioni & Messaggi</button>
+            <button onclick="switchTab('tab-peer'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated">Profilo Peer & Card</button>
+            <button onclick="switchTab('tab-conclusions'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated">Memoria Conclusioni</button>
+            <button onclick="switchTab('tab-dialectic'); toggleMobileNav();" class="w-full text-left py-2 px-3 rounded hover:bg-surface-elevated text-brand-400 font-medium">Dialectic Chat Lab</button>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 3. MAIN CONTENT STAGE (Dynamic Tabs) -->
+    <!-- ========================================================================= -->
+    <main class="flex-1 overflow-y-auto bg-canvas p-4 sm:p-6 lg:p-8" role="main">
+
+      <!-- ===================================================================== -->
+      <!-- TAB 1: WORKSPACE & OVERVIEW -->
+      <!-- ===================================================================== -->
+      <section id="tab-overview" class="space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-4">
+          <div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">Panoramica Workspace</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Gestione contesto sociale, configurazione e indici di social cognition per Alex.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="openModal('newSessionModal')" class="px-3 py-1.5 rounded-lg bg-surface-elevated border border-slate-700 hover:bg-slate-700 text-xs font-medium transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              Nuova Sessione
+            </button>
+            <button onclick="triggerDreaming()" class="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium shadow-md shadow-brand-600/20 transition flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Avvia Dreaming Autonomo
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="rounded-xl bg-surface border border-border-subtle p-4">
+            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Sessioni Attive</div>
+            <div class="text-2xl font-bold font-mono text-white mt-1">1</div>
+            <div class="text-[11px] text-emerald-400 mt-1 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> session-01
+            </div>
+          </div>
+          <div class="rounded-xl bg-surface border border-border-subtle p-4">
+            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Peer Monitorati</div>
+            <div class="text-2xl font-bold font-mono text-indigo-400 mt-1">1</div>
+            <div class="text-[11px] text-slate-400 mt-1">alex (utente principale)</div>
+          </div>
+          <div class="rounded-xl bg-surface border border-border-subtle p-4">
+            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Conclusioni Estratte</div>
+            <div class="text-2xl font-bold font-mono text-brand-400 mt-1">4</div>
+            <div class="text-[11px] text-slate-400 mt-1">2 explicit, 1 deductive, 1 inductive</div>
+          </div>
+          <div class="rounded-xl bg-surface border border-border-subtle p-4">
+            <div class="text-[11px] font-medium text-slate-400 uppercase tracking-wider">Stato Dreaming</div>
+            <div class="text-2xl font-bold font-mono text-emerald-400 mt-1">IDLE</div>
+            <div class="text-[11px] text-slate-400 mt-1">Prossimo ciclo automatico: ~15m</div>
+          </div>
+        </div>
+
+        <!-- Current Workspace Detail Card -->
+        <div class="rounded-xl bg-surface border border-border-subtle p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-semibold text-white">Dettagli Workspace:</span>
+              <code class="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 font-mono text-xs">test-hermes-workspace</code>
+            </div>
+            <span class="text-xs text-slate-400 font-mono">Creato: 2026-10-05T10:29:00Z</span>
+          </div>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <div class="p-3 rounded-lg bg-surface-subtle border border-slate-800 space-y-2">
+              <div class="font-semibold text-slate-300">Configurazione Social Cognition</div>
+              <p class="text-slate-400 text-[11px]">Honcho analizza i flussi tra l'assistente e Alex distillando tratti psicologici, preferenze di lavoro e deduzioni multi-step.</p>
+              <div class="flex gap-2 pt-1">
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">model: dialectic-v3</span>
+                <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono text-[10px]">streaming: true</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-lg bg-surface-subtle border border-slate-800 space-y-2">
+              <div class="font-semibold text-slate-300">API Alignment Verified</div>
+              <p class="text-slate-400 text-[11px]">Endpoint verificati con successo su <code>http://192.168.4.91:8000/v3</code>. Nessuna rotta o schema fittizio.</p>
+              <div class="text-emerald-400 text-[11px] font-mono flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                OpenAPI 3.1.0 Compatible
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 2: SESSIONS & MESSAGES TIMELINE -->
+      <!-- ===================================================================== -->
+      <section id="tab-sessions" class="hidden space-y-6">
+        <div class="flex items-center justify-between border-b border-border-subtle pb-4">
+          <div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">Sessioni & Cronologia Messaggi</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Esplorazione sessioni, timeline scambi con Alex e conteggio token.</p>
+          </div>
+          <button onclick="openModal('newSessionModal')" class="px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            Crea Sessione
+          </button>
+        </div>
+
+        <!-- Master-Detail 2-Column Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[540px]">
+          
+          <!-- Left: Session List (4 cols) -->
+          <div class="lg:col-span-4 rounded-xl bg-surface border border-border-subtle flex flex-col overflow-hidden">
+            <div class="p-3 border-b border-slate-800 bg-surface-subtle flex items-center justify-between">
+              <span class="text-xs font-semibold text-slate-300">Sessioni Disponibili</span>
+              <span class="text-[10px] font-mono text-slate-400">Total: 1</span>
+            </div>
+
+            <!-- Normal Content -->
+            <div id="sessionListNormal" class="p-2 space-y-2 flex-1 overflow-y-auto">
+              <div class="p-3 rounded-lg bg-surface-elevated border border-brand-500/40 cursor-pointer transition">
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-xs font-bold text-white">session-01</span>
+                  <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/10 text-emerald-400 font-medium">Attiva</span>
+                </div>
+                <p class="text-[11px] text-slate-400 mt-1 line-clamp-1">Inizializzazione architettura dashboard e preferenze Alex...</p>
+                <div class="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                  <span>3 messaggi</span>
+                  <span>142 tokens</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty Content (Controlled by State Simulator) -->
+            <div id="sessionListEmpty" class="hidden p-6 text-center text-xs text-slate-400 flex-1 flex flex-col items-center justify-center">
+              <svg class="w-8 h-8 text-slate-600 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+              <span>Nessuna sessione trovata.</span>
+              <button onclick="openModal('newSessionModal')" class="mt-2 text-brand-400 font-medium hover:underline">Crea la prima sessione</button>
+            </div>
+
+            <!-- Loading Skeleton (Controlled by State Simulator) -->
+            <div id="sessionListLoading" class="hidden p-3 space-y-3 flex-1">
+              <div class="h-16 rounded-lg shimmer"></div>
+              <div class="h-16 rounded-lg shimmer"></div>
+            </div>
+          </div>
+
+          <!-- Right: Message Timeline & Composer (8 cols) -->
+          <div class="lg:col-span-8 rounded-xl bg-surface border border-border-subtle flex flex-col overflow-hidden">
+            <div class="p-3 border-b border-slate-800 bg-surface-subtle flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-white">Cronologia:</span>
+                <span class="font-mono text-xs text-indigo-300">session-01</span>
+                <span class="text-[11px] text-slate-400">· Peer: alex</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="alert('Session cloned for branch testing')" class="text-[11px] text-slate-400 hover:text-white px-2 py-0.5 rounded bg-slate-800">Clona Sessione</button>
+              </div>
+            </div>
+
+            <!-- Messages Stream Area -->
+            <div id="messagesTimelineNormal" class="flex-1 p-4 overflow-y-auto space-y-4">
+              <!-- Message 1: Alex -->
+              <div class="flex flex-col items-start max-w-xl">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-mono text-[11px] font-semibold text-indigo-400">alex</span>
+                  <span class="text-[10px] text-slate-400">10:29:10</span>
+                  <span class="text-[10px] font-mono text-slate-400 px-1.5 rounded bg-slate-800">28 tokens</span>
+                </div>
+                <div class="p-3 rounded-2xl rounded-tl-sm bg-surface-elevated border border-slate-700/60 text-xs text-slate-200">
+                  Ciao! Dobbiamo progettare un'interfaccia moderna e reattiva per il nostro cluster. Voglio componenti minimali e token di design ben documentati.
+                </div>
+              </div>
+
+              <!-- Message 2: Agent -->
+              <div class="flex flex-col items-end self-end max-w-xl ml-auto">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-[10px] font-mono text-slate-400 px-1.5 rounded bg-slate-800">62 tokens</span>
+                  <span class="text-[10px] text-slate-400">10:29:25</span>
+                  <span class="font-mono text-[11px] font-semibold text-brand-400">assistant</span>
+                </div>
+                <div class="p-3 rounded-2xl rounded-tr-sm bg-brand-950/40 border border-brand-500/30 text-xs text-slate-100">
+                  Certamente Alex. Possiamo impostare un design system ispirato a Linear/Vercel con Tailwind CSS, palette scura e supporto nativo per l'auditing del dialectic reasoning.
+                </div>
+              </div>
+
+              <!-- Message 3: Alex -->
+              <div class="flex flex-col items-start max-w-xl">
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="font-mono text-[11px] font-semibold text-indigo-400">alex</span>
+                  <span class="text-[10px] text-slate-400">10:30:05</span>
+                  <span class="text-[10px] font-mono text-slate-400 px-1.5 rounded bg-slate-800">52 tokens</span>
+                </div>
+                <div class="p-3 rounded-2xl rounded-tl-sm bg-surface-elevated border border-slate-700/60 text-xs text-slate-200">
+                  Perfetto. Assicurati che le conclusioni della social cognition siano categorizzate per livello di ragionamento (explicit, deductive, inductive).
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty Messages -->
+            <div id="messagesTimelineEmpty" class="hidden flex-1 p-8 text-center text-xs text-slate-400 flex flex-col items-center justify-center">
+              <p>Nessun messaggio registrato in questa sessione.</p>
+              <span class="text-[11px] text-slate-400 mt-1">Invia il primo messaggio con il composer sottostante.</span>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="messagesTimelineLoading" class="hidden flex-1 p-4 space-y-4">
+              <div class="w-2/3 h-14 rounded-xl shimmer"></div>
+              <div class="w-1/2 h-14 rounded-xl shimmer ml-auto"></div>
+              <div class="w-3/4 h-14 rounded-xl shimmer"></div>
+            </div>
+
+            <!-- Message Composer Bar (Simulated Batch Submission) -->
+            <div class="p-3 border-t border-slate-800 bg-surface-subtle space-y-1.5">
+              <div class="text-[10px] text-slate-400 font-mono flex items-center justify-between">
+                <span>Schema API: MessageBatchCreate { messages: [{ content, peer_id }] }</span>
+                <span class="text-indigo-400 font-sans">[Azione Mockup Simulata]</span>
+              </div>
+              <form onsubmit="sendMockMessage(event)" class="flex gap-2 items-center">
+                <select id="mockSenderSelect" class="bg-surface border border-slate-700 rounded-lg text-xs px-2.5 py-2 text-slate-300 font-mono focus:border-brand-500 focus:outline-none">
+                  <option value="alex">alex</option>
+                  <option value="assistant">assistant</option>
+                  <option value="system">system</option>
+                </select>
+                <input id="mockMessageInput" type="text" placeholder="Scrivi un messaggio di test per Alex..." class="flex-1 bg-surface border border-slate-700 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-brand-500 focus:outline-none transition">
+                <button type="submit" class="px-4 py-2 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition">Invia (Demo)</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 3: PEER PROFILE & PEER CARD -->
+      <!-- ===================================================================== -->
+      <section id="tab-peer" class="hidden space-y-6">
+        <div class="flex items-center justify-between border-b border-border-subtle pb-4">
+          <div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">Profilo Peer & Cognitive Card</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Sintesi dell'identità cognitiva, tratti psicologici e contesto sociale ricavati da Honcho per Alex.</p>
+          </div>
+          <button onclick="refreshPeerCard()" class="px-3 py-1.5 rounded-lg bg-surface-elevated border border-slate-700 hover:bg-slate-700 text-xs font-medium text-slate-300 transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Aggiorna Card
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          <!-- Peer Card Summary (Left Col) -->
+          <div class="rounded-xl bg-surface border border-border-subtle p-5 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-indigo-500/20">
+                A
+              </div>
+              <div>
+                <h3 class="text-base font-semibold text-white">Alex</h3>
+                <div class="flex items-center gap-2 mt-0.5">
+                  <span class="font-mono text-xs text-slate-400">ID: alex</span>
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-800 space-y-2 text-xs">
+              <div class="flex justify-between text-slate-400">
+                <span>Workspace:</span>
+                <span class="font-mono text-slate-200">test-hermes-workspace</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Creato il:</span>
+                <span class="font-mono text-slate-200">2026-10-05 10:29 UTC</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Endpoint Card:</span>
+                <span class="font-mono text-indigo-400">GET /peers/alex/card</span>
+              </div>
+            </div>
+
+            <div class="pt-3 border-t border-slate-800 space-y-1.5">
+              <button onclick="triggerRepresentation()" class="w-full py-2 rounded-lg bg-surface-elevated hover:bg-surface-hover border border-slate-700 text-xs font-medium text-slate-200 transition">
+                Recupera Representation (POST /representation query)
+              </button>
+              <div class="text-[10px] text-slate-400 text-center font-mono">
+                Recupera sottoinsieme rappresentazione (non calcola vettori)
+              </div>
+            </div>
+          </div>
+
+          <!-- Cognitive Traits & Learned Card (Right Col - 2 spans) -->
+          <div class="lg:col-span-2 rounded-xl bg-surface border border-border-subtle p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span class="text-sm font-semibold text-white">Peer Card Synthesized Traits</span>
+                </div>
+                <span class="text-[11px] font-mono text-slate-400">Honcho Cognitive Distillation</span>
+              </div>
+
+              <!-- Normal Peer Card Traits -->
+              <div id="peerCardNormal" class="mt-4 space-y-3">
+                <div class="p-3 rounded-lg bg-surface-subtle border border-slate-800 flex items-start gap-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0 mt-0.5">Trait 1</span>
+                  <div class="text-xs text-slate-200">
+                    <strong>Approccio Architetturale:</strong> Predilige design system compatti e modulari con Tailwind CSS; forte enfasi sulla tokenizzazione semantica e la separazione netta tra mock e produzione.
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-surface-subtle border border-slate-800 flex items-start gap-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 shrink-0 mt-0.5">Trait 2</span>
+                  <div class="text-xs text-slate-200">
+                    <strong>Trasparenza Cognitiva:</strong> Richiede la tracciabilità delle evidenze nei flussi dialettici (audit trace di conclusioni e messaggi consultati prima di emettere conclusioni).
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-lg bg-surface-subtle border border-slate-800 flex items-start gap-3">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 mt-0.5">Trait 3</span>
+                  <div class="text-xs text-slate-200">
+                    <strong>Rigore API:</strong> Rifiuta categoricamente endpoint o payload ipotetici non allineati all'OpenAPI 3.1.0 ufficiale del server Honcho v3.2.2.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Empty Peer Card (When peer_card: null) -->
+              <div id="peerCardEmpty" class="hidden mt-6 p-6 rounded-lg bg-surface-subtle border border-dashed border-slate-700 text-center">
+                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center mx-auto text-slate-400 mb-3">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <h4 class="text-xs font-semibold text-white">Nessuna Peer Card ancora distillata</h4>
+                <p class="text-[11px] text-slate-400 max-w-sm mx-auto mt-1">Honcho genera automaticamente la Peer Card durante i cicli di dreaming quando accumula sufficienti scambi nella sessione.</p>
+                <button onclick="triggerDreaming()" class="mt-3 px-3 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium transition">Avvia Dreaming Ora</button>
+              </div>
+
+              <!-- Loading Skeleton -->
+              <div id="peerCardLoading" class="hidden mt-4 space-y-3">
+                <div class="h-14 rounded-lg shimmer"></div>
+                <div class="h-14 rounded-lg shimmer"></div>
+                <div class="h-14 rounded-lg shimmer"></div>
+              </div>
+            </div>
+
+            <!-- Footer note -->
+            <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+              <span>Schema API: <code>PeerCardResponse { peer_card: string[] | null }</code></span>
+              <span class="text-indigo-400 font-mono">Status: Synced</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 4: CONCLUSIONS & SEMANTIC SEARCH -->
+      <!-- ===================================================================== -->
+      <section id="tab-conclusions" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-4">
+          <div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">Memoria Social Cognition (Conclusioni)</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Ricerca vettoriale semantica su endpoint <code>/v3/workspaces/{id}/conclusions/query</code> e classificazione cognitiva.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-400 font-mono">Distance Metric: Cosine [0.0 - 1.0]</span>
+          </div>
+        </div>
+
+        <!-- Semantic Search & Filters Toolbar -->
+        <div class="p-4 rounded-xl bg-surface border border-border-subtle space-y-3">
+          <div class="flex flex-col md:flex-row items-center gap-3">
+            <!-- Search Query Input -->
+            <div class="relative flex-1 w-full">
+              <svg class="w-4 h-4 text-slate-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+              <input id="conclusionQueryInput" oninput="liveFilterConclusions()" type="text" placeholder="Cerca semantica (es. 'stile design', 'token', 'API', 'architettura')..." class="w-full bg-surface-subtle border border-slate-700 rounded-lg pl-9 pr-4 py-2 text-xs text-white placeholder-slate-400 focus:border-brand-500 focus:outline-none transition">
+            </div>
+
+            <!-- Distance Slider Control -->
+            <div class="flex items-center gap-2 w-full md:w-auto bg-surface-subtle px-3 py-1.5 rounded-lg border border-slate-700/60 text-xs">
+              <span class="text-slate-400 text-[11px] whitespace-nowrap">Max Distance:</span>
+              <input id="distanceSlider" oninput="updateDistanceVal(this.value); liveFilterConclusions();" type="range" min="0.1" max="1.0" step="0.05" value="0.75" class="w-24 accent-brand-500 cursor-pointer">
+              <span id="distanceVal" class="font-mono text-indigo-400 text-[11px]">0.75</span>
+            </div>
+          </div>
+
+          <!-- Cognitive Level Filter Chips -->
+          <div class="flex items-center gap-2 pt-1 overflow-x-auto text-xs">
+            <span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mr-1">Livello:</span>
+            <button onclick="setLevelFilter('all')" id="levelBtn-all" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-brand-600 text-white transition">Tutti (4)</button>
+            <button onclick="setLevelFilter('explicit')" id="levelBtn-explicit" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition">explicit (2)</button>
+            <button onclick="setLevelFilter('deductive')" id="levelBtn-deductive" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 hover:bg-indigo-500/20 transition">deductive (1)</button>
+            <button onclick="setLevelFilter('inductive')" id="levelBtn-inductive" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20 hover:bg-amber-500/20 transition">inductive (1)</button>
+            <button onclick="setLevelFilter('contradiction')" id="levelBtn-contradiction" class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-rose-500/10 text-rose-400 border border-rose-500/20 hover:bg-rose-500/20 transition">contradiction (0)</button>
+          </div>
+        </div>
+
+        <!-- Conclusions Table View -->
+        <div class="rounded-xl bg-surface border border-border-subtle overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs" role="table">
+              <thead class="bg-surface-subtle border-b border-slate-800 text-slate-400 font-medium">
+                <tr>
+                  <th class="py-3 px-4 w-28">Livello</th>
+                  <th class="py-3 px-4">Contenuto Conclusione (Documento)</th>
+                  <th class="py-3 px-4 w-36">Observer &rarr; Observed</th>
+                  <th class="py-3 px-4 w-28 text-center">Derivazioni</th>
+                  <th class="py-3 px-4 w-28 text-right">Data</th>
+                </tr>
+              </thead>
+              <tbody id="conclusionsTableBody" class="divide-y divide-slate-800/60 font-sans">
+                <!-- Row 1: Explicit -->
+                <tr class="hover:bg-surface-elevated/50 transition cursor-pointer" onclick="inspectConclusion('conc-01')">
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">explicit</span>
+                  </td>
+                  <td class="py-3 px-4 text-slate-200">
+                    Alex richiede l'uso di Tailwind CSS e standard di design minimalisti ispirati a Linear/Vercel.
+                  </td>
+                  <td class="py-3 px-4 font-mono text-[11px] text-slate-400">
+                    assistant &rarr; <span class="text-indigo-400">alex</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-300">1x</td>
+                  <td class="py-3 px-4 text-right font-mono text-[11px] text-slate-400">10:30 UTC</td>
+                </tr>
+
+                <!-- Row 2: Deductive -->
+                <tr class="hover:bg-surface-elevated/50 transition cursor-pointer" onclick="inspectConclusion('conc-02')">
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-semibold">deductive</span>
+                  </td>
+                  <td class="py-3 px-4 text-slate-200">
+                    L'utente valuta prioritario l'allineamento all'OpenAPI Honcho v3.2.2 rispetto alla velocità di implementazione pura.
+                  </td>
+                  <td class="py-3 px-4 font-mono text-[11px] text-slate-400">
+                    dreaming &rarr; <span class="text-indigo-400">alex</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-300">2x</td>
+                  <td class="py-3 px-4 text-right font-mono text-[11px] text-slate-400">10:32 UTC</td>
+                </tr>
+
+                <!-- Row 3: Inductive -->
+                <tr class="hover:bg-surface-elevated/50 transition cursor-pointer" onclick="inspectConclusion('conc-03')">
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-amber-500/10 text-amber-400 border border-amber-500/20 font-semibold">inductive</span>
+                  </td>
+                  <td class="py-3 px-4 text-slate-200">
+                    Flussi di feedback visivi con indicatori di stato (loading shimmer, empty states) aumentano la fiducia nell'agente.
+                  </td>
+                  <td class="py-3 px-4 font-mono text-[11px] text-slate-400">
+                    dreaming &rarr; <span class="text-indigo-400">alex</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-300">3x</td>
+                  <td class="py-3 px-4 text-right font-mono text-[11px] text-slate-400">10:33 UTC</td>
+                </tr>
+
+                <!-- Row 4: Explicit 2 -->
+                <tr class="hover:bg-surface-elevated/50 transition cursor-pointer" onclick="inspectConclusion('conc-04')">
+                  <td class="py-3 px-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold">explicit</span>
+                  </td>
+                  <td class="py-3 px-4 text-slate-200">
+                    Lo streaming delle risposte dialettiche deve essere attivabile via query parameter <code>stream: true</code>.
+                  </td>
+                  <td class="py-3 px-4 font-mono text-[11px] text-slate-400">
+                    assistant &rarr; <span class="text-indigo-400">alex</span>
+                  </td>
+                  <td class="py-3 px-4 text-center font-mono text-slate-300">1x</td>
+                  <td class="py-3 px-4 text-right font-mono text-[11px] text-slate-400">10:34 UTC</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty Conclusions State -->
+          <div id="conclusionsEmpty" class="hidden p-8 text-center text-xs text-slate-400">
+            <svg class="w-8 h-8 text-slate-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            <p>Nessuna conclusione corrisponde ai criteri di ricerca semantica o alla soglia di distanza.</p>
+            <button onclick="resetConclusionFilters()" class="mt-2 text-brand-400 hover:underline">Reimposta filtri</button>
+          </div>
+
+          <!-- Loading Shimmer State -->
+          <div id="conclusionsLoading" class="hidden p-4 space-y-3">
+            <div class="h-10 rounded shimmer"></div>
+            <div class="h-10 rounded shimmer"></div>
+            <div class="h-10 rounded shimmer"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- TAB 5: DIALECTIC CHAT PLAYGROUND -->
+      <!-- ===================================================================== -->
+      <section id="tab-dialectic" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border-subtle pb-4">
+          <div>
+            <h1 class="text-lg font-semibold text-white tracking-tight">Playground Dialectic Chat</h1>
+            <p class="text-xs text-slate-400 mt-0.5">Test interattivo delle risposte dialettiche con controllo di reasoning, streaming e audit trace delle evidenze.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-1 rounded bg-brand-950/60 border border-brand-500/30 text-brand-300 font-mono text-[11px]">
+              POST /peers/alex/chat
+            </span>
+          </div>
+        </div>
+
+        <!-- Dialectic Configuration Ribbon -->
+        <div class="p-3.5 rounded-xl bg-surface border border-border-subtle flex flex-wrap items-center justify-between gap-3 text-xs">
+          <!-- Target & Scope (Mutually Exclusive per OpenAPI) -->
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-1.5">
+              <span class="text-slate-400 text-[11px]">Target:</span>
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-indigo-300 font-mono font-medium">alex</span>
+            </div>
+            <div class="flex items-center gap-2 bg-surface-subtle p-1 rounded-lg border border-slate-700/60">
+              <div class="flex items-center gap-1">
+                <input type="radio" id="scopeTypeSession" name="scopeChoice" value="session" checked onchange="toggleScopeExclusivity()" class="accent-brand-500">
+                <label for="scopeTypeSession" class="text-slate-300 text-[11px] cursor-pointer">Session ID:</label>
+                <select id="chatSessionScope" class="bg-surface border border-slate-700 rounded px-2 py-0.5 text-xs text-slate-200 font-mono focus:outline-none">
+                  <option value="session-01">session-01</option>
+                </select>
+              </div>
+              <div class="h-3 w-px bg-slate-700"></div>
+              <div class="flex items-center gap-1">
+                <input type="radio" id="scopeTypeScope" name="scopeChoice" value="scope" onchange="toggleScopeExclusivity()" class="accent-brand-500">
+                <label for="scopeTypeScope" class="text-slate-300 text-[11px] cursor-pointer">Scope:</label>
+                <input id="chatScopeInput" type="text" placeholder="nome-scope" disabled class="w-24 bg-slate-900 border border-slate-800 rounded px-2 py-0.5 text-xs text-slate-400 font-mono focus:outline-none disabled:opacity-40">
+              </div>
+            </div>
+          </div>
+
+          <!-- Reasoning Level Radio Pills -->
+          <div class="flex items-center gap-1 bg-surface-subtle p-1 rounded-lg border border-slate-700/60">
+            <span class="text-slate-400 text-[11px] px-1.5">Reasoning:</span>
+            <button onclick="setReasoningLevel('minimal')" id="rBtn-minimal" class="px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-white transition">minimal</button>
+            <button onclick="setReasoningLevel('low')" id="rBtn-low" class="px-2 py-0.5 rounded text-[11px] bg-brand-600 text-white font-medium transition">low</button>
+            <button onclick="setReasoningLevel('medium')" id="rBtn-medium" class="px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-white transition">medium</button>
+            <button onclick="setReasoningLevel('high')" id="rBtn-high" class="px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-white transition">high</button>
+            <button onclick="setReasoningLevel('max')" id="rBtn-max" class="px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-white transition">max</button>
+          </div>
+
+          <!-- Toggles: Stream & Include Evidence -->
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input id="streamToggle" type="checkbox" checked class="accent-brand-500 rounded">
+              <span class="text-[11px]">Streaming (SSE)</span>
+            </label>
+            <label class="flex items-center gap-1.5 cursor-pointer text-slate-300">
+              <input id="evidenceToggle" type="checkbox" checked class="accent-brand-500 rounded">
+              <span class="text-[11px]">Includi Evidenze</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Chat Output & Conversation Pane -->
+        <div class="rounded-xl bg-surface border border-border-subtle flex flex-col min-h-[460px] overflow-hidden">
+          <div class="p-3 border-b border-slate-800 bg-surface-subtle flex items-center justify-between text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-brand-400"></span>
+              <span class="font-semibold text-white">Dialectic Dialogue Engine</span>
+              <span class="text-slate-500">· Prospettiva centrata su Alex</span>
+            </div>
+            <button onclick="clearChat()" class="text-slate-400 hover:text-white text-[11px]">Pulisci Chat</button>
+          </div>
+
+          <!-- Chat Messages Body -->
+          <div id="dialecticChatFeed" class="flex-1 p-5 overflow-y-auto space-y-4">
+            <!-- Initial Prompt & Response -->
+            <div class="flex flex-col items-end self-end max-w-xl ml-auto">
+              <div class="text-[10px] text-slate-400 mb-1">Tu · 10:35</div>
+              <div class="p-3 rounded-2xl rounded-tr-sm bg-brand-900/40 border border-brand-500/40 text-xs text-white">
+                Quali sono i vincoli principali espressi da Alex per la nuova dashboard?
+              </div>
+            </div>
+
+            <!-- Assistant Dialectic Response -->
+            <div class="flex flex-col items-start max-w-2xl">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-mono text-[11px] font-bold text-brand-400">honcho-dialectic</span>
+                <span class="text-[10px] text-slate-400">10:35:02</span>
+                <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Reasoning: low</span>
+              </div>
+              <div class="p-4 rounded-2xl rounded-tl-sm bg-surface-elevated border border-slate-700/80 text-xs text-slate-100 space-y-2 leading-relaxed">
+                <p id="dialecticContentText">Dall'analisi delle interazioni registrate nel workspace con <strong>Alex</strong>, emergono tre direttive fondamentali:</p>
+                <ul class="list-disc pl-4 space-y-1 text-slate-200">
+                  <li><strong>Aderenza rigida all'API Honcho v3.2.2:</strong> Nessun endpoint inventato; utilizzo esclusivo delle rotte verificate su <code>/v3/workspaces</code>, <code>/peers/alex/card</code> e <code>/conclusions/query</code>.</li>
+                  <li><strong>Architettura UI Moderna e Leggera:</strong> Layout ispirato a Linear/Vercel con Tailwind CSS, palette scura e supporto WCAG 2.1 AA/AAA.</li>
+                  <li><strong>Trasparenza Cognitiva:</strong> Esposizione delle evidenze (conclusioni osservate e messaggi consultati) durante ogni risposta dialettica.</li>
+                </ul>
+
+                <!-- Collapsible Evidence Audit Box -->
+                <div class="mt-3 pt-3 border-t border-slate-700/60">
+                  <button onclick="toggleEvidenceBox()" class="flex items-center justify-between w-full p-2 rounded bg-surface border border-slate-700 hover:border-slate-600 transition text-[11px]">
+                    <div class="flex items-center gap-2">
+                      <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                      <span class="font-medium text-slate-300">Audit Evidenze Honcho (<span class="text-indigo-400">2 Conclusioni</span>, <span class="text-slate-400">2 Messaggi</span>)</span>
+                    </div>
+                    <span id="evidenceChevron" class="text-slate-400 text-xs">&darr;</span>
+                  </button>
+
+                  <div id="evidenceDetails" class="hidden mt-2 p-3 rounded-lg bg-surface-subtle border border-slate-800 text-[11px] space-y-2 font-mono">
+                    <div class="text-slate-400 font-sans font-semibold">Conclusioni Consultate:</div>
+                    <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300 text-[10px]">
+                      [explicit] Alex richiede l'uso di Tailwind CSS e standard minimalisti.
+                    </div>
+                    <div class="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300 text-[10px]">
+                      [deductive] L'utente valuta prioritario l'allineamento all'OpenAPI Honcho v3.2.2.
+                    </div>
+                    <div class="text-slate-400 font-sans font-semibold pt-1">Tool Invocati:</div>
+                    <div class="text-slate-400 text-[10px]">
+                      &bull; <code>conclusions_search({ query: "vincoli alex dashboard", top_k: 5 })</code>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Query Suggestions & Prompt Input -->
+          <div class="p-3 border-t border-slate-800 bg-surface-subtle space-y-2">
+            <div class="flex items-center gap-1.5 overflow-x-auto text-[11px]">
+              <span class="text-slate-500 whitespace-nowrap">Suggerimenti:</span>
+              <button onclick="setPrompt('Quali sono gli obiettivi principali di Alex?')" class="px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 whitespace-nowrap transition">Obiettivi principali</button>
+              <button onclick="setPrompt('Riassumi le preferenze architetturali emerse')" class="px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 whitespace-nowrap transition">Preferenze architetturali</button>
+              <button onclick="setPrompt('Esistono contraddizioni o dubbi registrati?')" class="px-2 py-0.5 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 whitespace-nowrap transition">Verifica contraddizioni</button>
+            </div>
+
+            <form onsubmit="executeDialecticChat(event)" class="flex gap-2 items-center">
+              <input id="dialecticInput" type="text" placeholder="Interroga la dialettica cognitiva su Alex..." class="flex-1 bg-surface border border-slate-700 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:border-brand-500 focus:outline-none transition">
+              <button id="dialecticSubmitBtn" type="submit" class="px-4 py-2.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-white text-xs font-medium shadow-md shadow-brand-600/20 transition flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                Invia Query
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 4. MOBILE BOTTOM NAVIGATION BAR -->
+  <!-- ========================================================================= -->
+  <nav class="md:hidden h-14 border-t border-border-subtle bg-surface px-2 flex items-center justify-around z-30 shrink-0" role="tablist">
+    <button onclick="switchTab('tab-overview')" id="m-nav-tab-overview" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-400 hover:text-white">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+      <span>Overview</span>
+    </button>
+    <button onclick="switchTab('tab-sessions')" id="m-nav-tab-sessions" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-400 hover:text-white">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      <span>Sessioni</span>
+    </button>
+    <button onclick="switchTab('tab-peer')" id="m-nav-tab-peer" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-400 hover:text-white">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      <span>Peer Card</span>
+    </button>
+    <button onclick="switchTab('tab-conclusions')" id="m-nav-tab-conclusions" class="flex flex-col items-center gap-0.5 text-[10px] text-slate-400 hover:text-white">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+      <span>Conclusioni</span>
+    </button>
+    <button onclick="switchTab('tab-dialectic')" id="m-nav-tab-dialectic" class="flex flex-col items-center gap-0.5 text-[10px] text-brand-400 font-medium">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+      <span>Dialectic</span>
+    </button>
+  </nav>
+
+  <!-- ========================================================================= -->
+  <!-- 5. ACCESSIBLE MODALS (New Workspace, New Session, Conclusion Inspector) -->
+  <!-- ========================================================================= -->
+  
+  <!-- Modal: New Workspace -->
+  <div id="newWorkspaceModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface border border-slate-700 rounded-xl p-5 shadow-2xl space-y-4" role="dialog" aria-modal="true" aria-labelledby="newWsTitle">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 id="newWsTitle" class="text-sm font-semibold text-white">Crea Nuovo Workspace Honcho</h3>
+        <button onclick="closeModal('newWorkspaceModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">ID Workspace (identificatore univoco)</label>
+          <input id="newWsId" type="text" placeholder="es. alex-production-cluster" class="w-full bg-surface-subtle border border-slate-700 rounded-lg px-3 py-2 text-white font-mono focus:border-brand-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Metadata (JSON facoltativo)</label>
+          <textarea id="newWsMeta" rows="3" placeholder='{"project": "alex", "environment": "staging"}' class="w-full bg-surface-subtle border border-slate-700 rounded-lg p-2.5 text-slate-300 font-mono text-[11px] focus:border-brand-500 focus:outline-none"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeModal('newWorkspaceModal')" class="px-3 py-1.5 rounded-lg bg-surface-subtle hover:bg-surface-elevated text-xs text-slate-300">Annulla</button>
+        <button onclick="createMockWorkspace()" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-medium text-white shadow-md shadow-brand-600/20">Crea Workspace</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: New Session -->
+  <div id="newSessionModal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-surface border border-slate-700 rounded-xl p-5 shadow-2xl space-y-4" role="dialog" aria-modal="true" aria-labelledby="newSessionTitle">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+        <h3 id="newSessionTitle" class="text-sm font-semibold text-white">Nuova Sessione per Alex</h3>
+        <button onclick="closeModal('newSessionModal')" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">ID Sessione</label>
+          <input id="newSessionId" type="text" placeholder="es. session-02" class="w-full bg-surface-subtle border border-slate-700 rounded-lg px-3 py-2 text-white font-mono focus:border-brand-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-slate-300 font-medium mb-1">Peer Iniziale</label>
+          <input type="text" value="alex" disabled class="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-slate-400 font-mono">
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2 border-t border-slate-800">
+        <button onclick="closeModal('newSessionModal')" class="px-3 py-1.5 rounded-lg bg-surface-subtle hover:bg-surface-elevated text-xs text-slate-300">Annulla</button>
+        <button onclick="createMockSession()" class="px-4 py-1.5 rounded-lg bg-brand-600 hover:bg-brand-500 text-xs font-medium text-white">Crea Sessione</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 6. INTERACTIVE MOCKUP LOGIC (Vanilla JS) -->
+  <!-- ========================================================================= -->
+  <script>
+    // Tab Switching
+    let currentTab = 'tab-overview';
+    function switchTab(tabId) {
+      document.querySelectorAll('main > section').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+
+      // Update desktop sidebar styles
+      document.querySelectorAll('aside nav button').forEach(b => {
+        b.classList.remove('bg-surface-elevated', 'text-white', 'border', 'border-slate-700');
+        b.classList.add('text-slate-300');
+      });
+      const activeNav = document.getElementById('nav-' + tabId);
+      if (activeNav) {
+        activeNav.classList.add('bg-surface-elevated', 'text-white', 'border', 'border-slate-700');
+        activeNav.classList.remove('text-slate-300');
+      }
+
+      currentTab = tabId;
+    }
+
+    // State Simulator (Normal, Empty, Loading, Error)
+    let currentSimState = 'normal';
+    function setSimState(state) {
+      currentSimState = state;
+
+      // Update Simulator buttons style
+      ['normal', 'empty', 'loading', 'error'].forEach(s => {
+        const btn = document.getElementById('stateBtn-' + s);
+        if (btn) {
+          if (s === state) {
+            btn.className = (s === 'error') 
+              ? 'px-2.5 py-1 rounded text-[11px] font-medium bg-rose-600 text-white shadow-sm transition'
+              : 'px-2.5 py-1 rounded text-[11px] font-medium bg-brand-600 text-white shadow-sm transition';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded text-[11px] font-medium text-slate-400 hover:text-white transition';
+          }
+        }
+      });
+
+      // 1. Error Banner
+      const errBanner = document.getElementById('globalErrorBanner');
+      if (state === 'error') {
+        errBanner.classList.remove('hidden');
+      } else {
+        errBanner.classList.add('hidden');
+      }
+
+      // 2. Session List Elements
+      document.getElementById('sessionListNormal').classList.toggle('hidden', state !== 'normal' && state !== 'error');
+      document.getElementById('sessionListEmpty').classList.toggle('hidden', state !== 'empty');
+      document.getElementById('sessionListLoading').classList.toggle('hidden', state !== 'loading');
+
+      // 3. Message Timeline Elements
+      document.getElementById('messagesTimelineNormal').classList.toggle('hidden', state !== 'normal' && state !== 'error');
+      document.getElementById('messagesTimelineEmpty').classList.toggle('hidden', state !== 'empty');
+      document.getElementById('messagesTimelineLoading').classList.toggle('hidden', state !== 'loading');
+
+      // 4. Peer Card Elements
+      document.getElementById('peerCardNormal').classList.toggle('hidden', state !== 'normal' && state !== 'error');
+      document.getElementById('peerCardEmpty').classList.toggle('hidden', state !== 'empty');
+      document.getElementById('peerCardLoading').classList.toggle('hidden', state !== 'loading');
+
+      // 5. Conclusions Table Elements
+      const tableBody = document.getElementById('conclusionsTableBody');
+      const tableEmpty = document.getElementById('conclusionsEmpty');
+      const tableLoading = document.getElementById('conclusionsLoading');
+
+      if (state === 'loading') {
+        tableBody.classList.add('hidden');
+        tableEmpty.classList.add('hidden');
+        tableLoading.classList.remove('hidden');
+      } else if (state === 'empty') {
+        tableBody.classList.add('hidden');
+        tableEmpty.classList.remove('hidden');
+        tableLoading.classList.add('hidden');
+      } else {
+        tableBody.classList.remove('hidden');
+        tableEmpty.classList.add('hidden');
+        tableLoading.classList.add('hidden');
+      }
+    }
+
+    // Mobile Navigation Drawer Toggle
+    function toggleMobileNav() {
+      const drawer = document.getElementById('mobileDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    // Workspace Dropdown Toggle
+    function toggleWsDropdown() {
+      const menu = document.getElementById('wsDropdownMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    function selectWorkspace(wsId) {
+      document.getElementById('activeWsLabel').innerText = wsId;
+      toggleWsDropdown();
+    }
+
+    // Reasoning Level Selector
+    let currentReasoning = 'low';
+    function setReasoningLevel(level) {
+      currentReasoning = level;
+      ['minimal', 'low', 'medium', 'high', 'max'].forEach(lvl => {
+        const btn = document.getElementById('rBtn-' + lvl);
+        if (btn) {
+          if (lvl === level) {
+            btn.className = 'px-2 py-0.5 rounded text-[11px] bg-brand-600 text-white font-medium transition';
+          } else {
+            btn.className = 'px-2 py-0.5 rounded text-[11px] text-slate-400 hover:text-white transition';
+          }
+        }
+      });
+    }
+
+    // Semantic Conclusions Filter
+    let activeLevelFilter = 'all';
+    function setLevelFilter(level) {
+      activeLevelFilter = level;
+      ['all', 'explicit', 'deductive', 'inductive', 'contradiction'].forEach(lvl => {
+        const btn = document.getElementById('levelBtn-' + lvl);
+        if (btn) {
+          if (lvl === level) {
+            btn.classList.add('bg-brand-600', 'text-white');
+            btn.classList.remove('text-slate-400');
+          } else {
+            btn.classList.remove('bg-brand-600', 'text-white');
+          }
+        }
+      });
+      liveFilterConclusions();
+    }
+
+    function updateDistanceVal(val) {
+      document.getElementById('distanceVal').innerText = val;
+    }
+
+    function liveFilterConclusions() {
+      const query = document.getElementById('conclusionQueryInput').value.toLowerCase().trim();
+      const rows = document.querySelectorAll('#conclusionsTableBody tr');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        const text = row.innerText.toLowerCase();
+        const levelBadge = row.querySelector('span').innerText.trim().toLowerCase();
+
+        const matchesQuery = query === '' || text.includes(query);
+        const matchesLevel = activeLevelFilter === 'all' || levelBadge === activeLevelFilter;
+
+        if (matchesQuery && matchesLevel) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      const emptyEl = document.getElementById('conclusionsEmpty');
+      if (visibleCount === 0) {
+        emptyEl.classList.remove('hidden');
+      } else {
+        emptyEl.classList.add('hidden');
+      }
+    }
+
+    function resetConclusionFilters() {
+      document.getElementById('conclusionQueryInput').value = '';
+      setLevelFilter('all');
+      document.getElementById('distanceSlider').value = '0.75';
+      updateDistanceVal('0.75');
+      liveFilterConclusions();
+    }
+
+    function inspectConclusion(id) {
+      alert("Conclusion Inspector: " + id + "\nEndpoint: GET /v3/workspaces/test-hermes-workspace/conclusions/" + id + "\n\nPremesse e metadati caricati.");
+    }
+
+    // Dialectic Chat Simulation with Real-time Streaming & Evidence Drawer
+    function setPrompt(text) {
+      document.getElementById('dialecticInput').value = text;
+    }
+
+    function toggleEvidenceBox() {
+      const details = document.getElementById('evidenceDetails');
+      const chevron = document.getElementById('evidenceChevron');
+      const isHidden = details.classList.contains('hidden');
+      details.classList.toggle('hidden', !isHidden);
+      chevron.innerHTML = isHidden ? '&uarr;' : '&darr;';
+    }
+
+    function executeDialecticChat(e) {
+      e.preventDefault();
+      const input = document.getElementById('dialecticInput');
+      const query = input.value.trim();
+      if (!query) return;
+
+      const isStream = document.getElementById('streamToggle').checked;
+      const includeEvidence = document.getElementById('evidenceToggle').checked;
+      const chatFeed = document.getElementById('dialecticChatFeed');
+
+      // Append User message
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex flex-col items-end self-end max-w-xl ml-auto';
+      userBubble.innerHTML = `
+        <div class="text-[10px] text-slate-400 mb-1">Tu &middot; Adesso</div>
+        <div class="p-3 rounded-2xl rounded-tr-sm bg-brand-900/40 border border-brand-500/40 text-xs text-white">
+          ${query}
+        </div>
+      `;
+      chatFeed.appendChild(userBubble);
+      input.value = '';
+
+      // Prepare Assistant streaming placeholder
+      const assistantBubble = document.createElement('div');
+      assistantBubble.className = 'flex flex-col items-start max-w-2xl';
+      const bubbleId = 'resp-' + Date.now();
+      assistantBubble.innerHTML = `
+        <div class="flex items-center gap-2 mb-1">
+          <span class="font-mono text-[11px] font-bold text-brand-400">honcho-dialectic</span>
+          <span class="text-[10px] text-slate-400">Adesso</span>
+          <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Reasoning: ${currentReasoning}</span>
+        </div>
+        <div class="p-4 rounded-2xl rounded-tl-sm bg-surface-elevated border border-slate-700/80 text-xs text-slate-100 space-y-2 leading-relaxed">
+          <div id="${bubbleId}" class="inline"></div><span id="cursor-${bubbleId}" class="cursor-blink font-bold text-brand-400">▍</span>
+          
+          ${includeEvidence ? `
+          <div id="evidence-${bubbleId}" class="hidden mt-3 pt-3 border-t border-slate-700/60">
+            <div class="p-2 rounded bg-surface border border-slate-700 text-[11px] flex items-center justify-between">
+              <span class="font-medium text-slate-300">Evidenze analizzate da Honcho (Audit Trace):</span>
+              <span class="text-indigo-400 font-mono text-[10px]">Trace ID: tr-${Math.random().toString(36).substring(7)}</span>
+            </div>
+            <div class="mt-2 p-2.5 rounded bg-surface-subtle border border-slate-800 text-[10px] text-slate-300 space-y-1 font-mono">
+              <div>&bull; Scanned: 2 conclusions (level: explicit, deductive)</div>
+              <div>&bull; Queried: /v3/workspaces/test-hermes-workspace/peers/alex/context</div>
+            </div>
+          </div>
+          ` : ''}
+        </div>
+      `;
+      chatFeed.appendChild(assistantBubble);
+      chatFeed.scrollTop = chatFeed.scrollHeight;
+
+      // Simulate streaming chunks
+      const sampleResponse = "Sulla base del profilo cognitivo di Alex e delle conclusioni archiviate nel workspace, la risposta ottimale richiede di combinare semplicità visiva, token design coerenti e feedback immediato sull'audit trace.";
+      
+      const contentEl = document.getElementById(bubbleId);
+      const cursorEl = document.getElementById('cursor-' + bubbleId);
+      
+      if (isStream) {
+        let i = 0;
+        const interval = setInterval(() => {
+          if (i < sampleResponse.length) {
+            contentEl.innerText += sampleResponse[i];
+            i++;
+            chatFeed.scrollTop = chatFeed.scrollHeight;
+          } else {
+            clearInterval(interval);
+            cursorEl.remove();
+            const evEl = document.getElementById('evidence-' + bubbleId);
+            if (evEl) evEl.classList.remove('hidden');
+          }
+        }, 18);
+      } else {
+        contentEl.innerText = sampleResponse;
+        cursorEl.remove();
+        const evEl = document.getElementById('evidence-' + bubbleId);
+        if (evEl) evEl.classList.remove('hidden');
+      }
+    }
+
+    function clearChat() {
+      document.getElementById('dialecticChatFeed').innerHTML = `
+        <div class="text-center py-8 text-xs text-slate-500">
+          Chat ripulita. Invia una nuova query dialettica per testare l'inferenza di Honcho su Alex.
+        </div>
+      `;
+    }
+
+    // Scope vs Session Mutual Exclusivity Toggle (Honcho OpenAPI Constraint)
+    function toggleScopeExclusivity() {
+      const isSession = document.getElementById('scopeTypeSession').checked;
+      const sessionSelect = document.getElementById('chatSessionScope');
+      const scopeInput = document.getElementById('chatScopeInput');
+
+      sessionSelect.disabled = !isSession;
+      sessionSelect.classList.toggle('opacity-40', !isSession);
+
+      scopeInput.disabled = isSession;
+      scopeInput.classList.toggle('opacity-40', isSession);
+      scopeInput.classList.toggle('bg-slate-900', isSession);
+      scopeInput.classList.toggle('bg-surface', !isSession);
+      if (isSession) scopeInput.value = '';
+    }
+
+    // Modal helpers
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function createMockWorkspace() {
+      const id = document.getElementById('newWsId').value.trim();
+      if (!id) return;
+      alert("[Azione Mockup Simulata]\nCreato workspace: " + id + "\n(In produzione: POST /v3/workspaces con body WorkspaceCreate)");
+      selectWorkspace(id);
+      closeModal('newWorkspaceModal');
+    }
+
+    function createMockSession() {
+      const id = document.getElementById('newSessionId').value.trim();
+      if (!id) return;
+      alert("[Azione Mockup Simulata]\nCreata sessione: " + id + "\n(In produzione: POST /v3/workspaces/{id}/sessions)");
+      closeModal('newSessionModal');
+    }
+
+    function triggerDreaming() {
+      alert("[Azione Mockup Simulata]\nInviata richiesta: POST /v3/workspaces/{id}/schedule_dream\n(In produzione: avvia processo dreaming per la sintesi cognitiva)");
+    }
+
+    function refreshPeerCard() {
+      alert("[Azione Mockup Simulata]\nRecuperata card da: GET /v3/workspaces/{id}/peers/alex/card");
+    }
+
+    function triggerRepresentation() {
+      alert("[Azione Mockup Simulata]\nQuery: POST /v3/workspaces/{id}/peers/alex/representation\n(Recupera sottoinsieme curato della rappresentazione, non calcola vettori)");
+    }
+
+    function sendMockMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('mockMessageInput');
+      const sender = document.getElementById('mockSenderSelect').value;
+      const text = input.value.trim();
+      if (!text) return;
+
+      const timeline = document.getElementById('messagesTimelineNormal');
+      const isUser = sender === 'alex';
+      const msgDiv = document.createElement('div');
+      msgDiv.className = isUser ? 'flex flex-col items-start max-w-xl' : 'flex flex-col items-end self-end max-w-xl ml-auto';
+      msgDiv.innerHTML = `
+        <div class="flex items-center gap-2 mb-1 ${isUser ? '' : 'justify-end'}">
+          ${isUser ? `<span class="font-mono text-[11px] font-semibold text-indigo-400">${sender}</span>` : ''}
+          <span class="text-[10px] text-slate-400">Adesso (Demo)</span>
+          <span class="text-[10px] font-mono text-slate-400 px-1.5 rounded bg-slate-800">${Math.round(text.length / 4)} tokens</span>
+          ${!isUser ? `<span class="font-mono text-[11px] font-semibold text-brand-400">${sender}</span>` : ''}
+        </div>
+        <div class="p-3 rounded-2xl ${isUser ? 'rounded-tl-sm bg-surface-elevated border border-slate-700/60' : 'rounded-tr-sm bg-brand-950/40 border border-brand-500/30'} text-xs text-slate-100">
+          ${text}
+        </div>
+      `;
+      timeline.appendChild(msgDiv);
+      input.value = '';
+      timeline.scrollTop = timeline.scrollHeight;
+    }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('newWorkspaceModal');
+        closeModal('newSessionModal');
+        document.getElementById('mobileDrawer').classList.add('hidden');
+        document.getElementById('wsDropdownMenu').classList.add('hidden');
+      }
+      if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        switchTab('tab-conclusions');
+        setTimeout(() => document.getElementById('conclusionQueryInput').focus(), 50);
+      }
+    });
+
+    // Initialize Default State
+    setSimState('normal');
+    switchTab('tab-overview');
+  </script>
+</body>
+</html>
